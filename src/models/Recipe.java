@@ -1,22 +1,25 @@
 package models;
 
+import org.bson.types.ObjectId;
+
 import java.util.Collection;
 
 public class Recipe {
-    String id;
+    ObjectId id;
     String name;
 
     // TODO: Chyba że BufferedImage zamiast ścieżki? Mniej optymalne gdybyśmy pobrali obrazki, a później część z nich
-    //   * odsiali, ale być może bardziej wygodne
+    //   * odsiali, ale być może bardziej wygodne - P: szczerze mówiąc nie mam pojęcia, ale chyba lepiej tak jak jest
     String imagePath;
     Collection<Ingredient> ingredients;
 
-    // TODO: Alternatywnie Collection<Rating>
-    Collection<String> ratingIds;
+    // TODO: Alternatywnie Collection<Rating> - P: objectid chyba lepsze
+    Collection<ObjectId> ratingIds;
     Collection<String> tags;
     Collection<Category> categories;
 
-    public Recipe(String id, String name, String imagePath, Collection<Ingredient> ingredients, Collection<String> ratingIds, Collection<String> tags, Collection<Category> categories) {
+    public Recipe(ObjectId id, String name, String imagePath, Collection<Ingredient> ingredients,
+                  Collection<ObjectId> ratingIds, Collection<String> tags, Collection<Category> categories) {
         this.id = id;
         this.name = name;
         this.imagePath = imagePath;

@@ -1,0 +1,19 @@
+package filters;
+
+import com.mongodb.client.model.Filters;
+import models.Category;
+import org.bson.conversions.Bson;
+
+public class CategoryFilter implements RecipeFilter {
+    private final Category category;
+
+    public CategoryFilter(Category category) {
+        this.category = category;
+    }
+
+
+    @Override
+    public Bson getQuery() {
+        return Filters.regex("categories", "*" + category.name() + "*");
+    }
+}

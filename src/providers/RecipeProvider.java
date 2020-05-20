@@ -3,31 +3,32 @@ package providers;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import filters.RecipeFilter;
 import models.Category;
 import models.Ingredient;
 import models.Rating;
 import models.Recipe;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class RecipeProvider {
-    private MongoClient mongoClient;
-    private MongoDatabase db;
+    private final MongoDatabase db;
 
     public RecipeProvider(String databaseName) {
-        mongoClient = new MongoClient();
+        MongoClient mongoClient = new MongoClient();
         db = mongoClient.getDatabase(databaseName);
     }
-
-    public Collection<Recipe> getAllRecipes() {
+public Collection<Recipe> getAllRecipes(RecipeFilter filter) {
         Collection<Recipe> res = new LinkedList<>();
 
         db.getCollection("recipe")
-                .find()
+                .find(filter.getQuery())
                 .into(new LinkedList<>())
                 .forEach((object) -> {
                     // TODO: not yet sure if collections creation works
@@ -35,9 +36,9 @@ public class RecipeProvider {
                     ((List<Document>) object.get("ingredients")).forEach((ingredient) -> {
                         ingredients.add(new Ingredient(ingredient.getString("name"), ingredient.getInteger("quantity"), ingredient.getString("unit")));
                     });
-                    Collection<String> ratingIds = new LinkedList<>();
+                    Collection<ObjectId> ratingIds = new LinkedList<>();
                     ((List<Document>) object.get("ratings")).forEach((rating) -> {
-                        ratingIds.add(rating.getString("rating_id"));
+                        ratingIds.add(rating.getObjectId("rating_id"));
                     });
                     Collection<String> tags = new LinkedList<>();
                     ((List<Document>) object.get("tags")).forEach((tag) -> {
@@ -49,7 +50,7 @@ public class RecipeProvider {
                     });
 
                     res.add(new Recipe(
-                            object.getString("_id"),
+                            object.getObjectId("_id"),
                             object.getString("name"),
                             object.getString("image"),
                             ingredients,
@@ -62,22 +63,20 @@ public class RecipeProvider {
         return res;
     }
 
-    public Collection<Rating> getRatings(Collection<String> ids) {
+    public Collection<Rating> getRatings(Collection<ObjectId> ids) {
         Collection<Rating> res = new LinkedList<>();
 
-        ids.forEach((id) -> {
-            db.getCollection("ratings")
-                    .find(Filters.eq("_id", id))
-                    .into(new LinkedList<>())
-                    .forEach((object) -> {
-                        res.add(new Rating(
-                                id,
-                                object.getInteger("stars"),
-                                object.getString("description"),
-                                object.getDate("date")
-                        ));
-                    });
-        });
+        ids.forEach((id) -> db.getCollection("ratings")
+                .find(Filters.eq("_id", id))
+                .into(new LinkedList<>())
+                .forEach((object) -> {
+                    res.add(new Rating(
+                            id,
+                            object.getInteger("stars"),
+                            object.getString("description"),
+                            object.getDate("date")
+                    ));
+                }));
 
         return res;
     }
