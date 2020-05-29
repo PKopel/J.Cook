@@ -1,4 +1,4 @@
-package models;
+package jcook.models;
 
 import org.bson.types.ObjectId;
 

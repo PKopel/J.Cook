@@ -3,5 +3,5 @@ module JCook {
     requires javafx.controls;
     requires mongo.java.driver;
 
-    opens sample;
+    opens jcook.sample;
 }

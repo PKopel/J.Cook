@@ -1,4 +1,4 @@
-package models;
+package jcook.models;
 
 public class Ingredient {
     String name;

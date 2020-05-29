@@ -1,20 +1,19 @@
-package providers;
+package jcook.providers;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import filters.RecipeFilter;
-import models.Category;
-import models.Ingredient;
-import models.Rating;
-import models.Recipe;
+import jcook.filters.RecipeFilter;
+import jcook.models.Category;
+import jcook.models.Ingredient;
+import jcook.models.Rating;
+import jcook.models.Recipe;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 

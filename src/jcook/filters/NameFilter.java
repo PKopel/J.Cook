@@ -1,4 +1,4 @@
-package filters;
+package jcook.filters;
 
 import com.mongodb.client.model.Filters;
 import org.bson.conversions.Bson;
