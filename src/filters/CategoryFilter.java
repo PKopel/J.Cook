@@ -13,6 +13,6 @@ public class CategoryFilter implements Filter {
 
     @Override
     public Bson getQuery() {
-        return Filters.regex("categories", "*" + category.name() + "*");
+        return Filters.regex("categories", category.name());
     }
 }

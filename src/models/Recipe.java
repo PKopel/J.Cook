@@ -1,13 +1,11 @@
 package models;
 
-import com.mongodb.BasicDBObject;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
 import java.util.Collection;
-import java.util.Objects;
 
-public class Recipe{
+public class Recipe {
     private String name;
 
     @BsonProperty(value = "image_path")
@@ -18,7 +16,8 @@ public class Recipe{
     private Collection<String> tags;
     private Collection<Category> categories;
 
-    public Recipe(){}
+    public Recipe() {
+    }
 
     public Recipe(
             String name,
@@ -81,31 +80,5 @@ public class Recipe{
 
     public void setCategories(Collection<Category> categories) {
         this.categories = categories;
-    }
-
-    @Override
-    public String toString() {
-        return "Recipe{" +
-                "name=" + name +
-                ", image_path=" + imagePath +
-                ", ingredients=" + ingredients +
-                ", ratings=" + ratingIds +
-                ", tags=" + tags +
-                ", categories=" + categories +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) return true;
-        if(o instanceof Recipe){
-            return ((Recipe) o).getCategories().equals(categories) && ((Recipe) o).getImagePath().equals(imagePath) && ((Recipe) o).getIngredients().equals(ingredients) && ((Recipe) o).getName().equals(name);
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name,categories,imagePath, ingredients);
     }
 }

@@ -5,7 +5,8 @@ public class Ingredient {
     private int quantity;
     private String unit;
 
-    public Ingredient(){}
+    public Ingredient() {
+    }
 
     public Ingredient(String name, int quantity, String unit) {
         this.name = name;

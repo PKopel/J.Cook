@@ -15,7 +15,7 @@ public class CombinedFilter implements Filter {
         this.combiningFun = combiningFun;
     }
 
-    public boolean addFilter(Filter filter){
+    public boolean addFilter(Filter filter) {
         return filters.add(filter);
     }
 

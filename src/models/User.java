@@ -1,6 +1,5 @@
 package models;
 
-import com.mongodb.BasicDBObject;
 import org.bson.types.ObjectId;
 
 import java.util.Collection;
@@ -10,9 +9,10 @@ public class User {
     private Collection<ObjectId> recipes;
     private Collection<ObjectId> ratings;
 
-    public User(){}
+    public User() {
+    }
 
-    public User(String name, Collection<ObjectId> recipes, Collection<ObjectId> ratings){
+    public User(String name, Collection<ObjectId> recipes, Collection<ObjectId> ratings) {
         this.name = name;
         this.recipes = recipes;
         this.ratings = ratings;

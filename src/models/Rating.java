@@ -1,8 +1,5 @@
 package models;
 
-import com.mongodb.BasicDBObject;
-import org.bson.types.ObjectId;
-
 import java.util.Date;
 
 public class Rating {
@@ -10,9 +7,10 @@ public class Rating {
     private String description;
     private Date date;
 
-    public Rating(){}
+    public Rating() {
+    }
 
-    public Rating( int stars, String description, Date date) {
+    public Rating(int stars, String description, Date date) {
         this.stars = stars;
         this.description = description;
         this.date = date;

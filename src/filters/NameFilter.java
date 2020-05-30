@@ -6,12 +6,12 @@ import org.bson.conversions.Bson;
 public class NameFilter implements Filter {
     private final String name;
 
-    public NameFilter(String name){
+    public NameFilter(String name) {
         this.name = name;
     }
 
     @Override
     public Bson getQuery() {
-        return Filters.regex("name", "*" + name + "*");
+        return Filters.regex("name", name);
     }
 }

@@ -40,8 +40,8 @@ public abstract class AbstractProvider<T> {
                 .into(new LinkedList<>());
     }
 
-    public void addObject(T object){
-        db.getCollection(collectionName,clazz)
+    public void addObject(T object) {
+        db.getCollection(collectionName, clazz)
                 .insertOne(object);
     }
 }
