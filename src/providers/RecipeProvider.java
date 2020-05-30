@@ -19,20 +19,15 @@ public class RecipeProvider extends AbstractProvider<Recipe> {
 
     public static void main(String[] args) {
         RecipeProvider repr = new RecipeProvider("JCookTest");
-        LinkedList<Ingredient> ingredients = new LinkedList<>(Arrays.asList(
-                new Ingredient("a", 1, "l"),
-                new Ingredient("b", 1, "l"),
-                new Ingredient("c", 1, "l")
-        ));
         Recipe recipe = new Recipe(
                 "Test",
                 "path",
-                ingredients,
-                new LinkedList<>(Collections.singleton(ObjectId.get())),
-                new LinkedList<>(Collections.singletonList("tag")),
-                new LinkedList<>(Collections.singletonList(Category.ALCOHOL))
+                new LinkedList<>(),
+                new LinkedList<>(),
+                new LinkedList<>(),
+                new LinkedList<>()
         );
         repr.addObject(recipe);
-        System.out.println(repr.getObjects(new CategoryFilter(Category.ALCOHOL)));
+        //System.out.println(repr.getObjects(new CategoryFilter(Category.ALCOHOL)));
     }
 }

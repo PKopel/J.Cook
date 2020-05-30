@@ -1,5 +1,6 @@
 package providers;
 
+import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -22,9 +23,11 @@ public abstract class AbstractProvider<T> {
     protected AbstractProvider(String databaseName, String collectionName, Class<T> clazz) {
         this.collectionName = collectionName;
         this.clazz = clazz;
+        ConnectionString connection = new ConnectionString("mongodb://127.0.0.1");
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         MongoClientSettings settings = MongoClientSettings.builder()
+                .applyConnectionString(connection)
                 .codecRegistry(pojoCodecRegistry)
                 .build();
         MongoClient mongoClient = MongoClients.create(settings);

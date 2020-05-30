@@ -4,4 +4,5 @@ module JCook {
     requires mongo.java.driver;
 
     opens sample;
+    exports models;
 }
