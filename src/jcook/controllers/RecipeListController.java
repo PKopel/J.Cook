@@ -26,7 +26,7 @@ public class RecipeListController {
     @FXML
     public void initialize() {
         for(int i = 0; i < 15; i++) {
-            testData.add(new Recipe(null, "Recipe"+i, "j_cook.jpeg", new LinkedList<>(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
+            testData.add(new Recipe("Recipe"+i, "j_cook.jpeg", new LinkedList<>(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
         }
 
         list.setFixedCellSize(fixedCellSize);
