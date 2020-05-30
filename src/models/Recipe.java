@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 import java.util.Collection;
 import java.util.Objects;
 
-public class Recipe extends BasicDBObject {
+public class Recipe{
     private String name;
 
     @BsonProperty(value = "image_path")
