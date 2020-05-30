@@ -1,63 +1,38 @@
 package providers;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
-import filters.RecipeFilter;
+import filters.CategoryFilter;
 import models.Category;
 import models.Ingredient;
-import models.Rating;
 import models.Recipe;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
-public class RecipeProvider {
-    private final MongoDatabase db;
+public class RecipeProvider extends AbstractProvider<Recipe> {
 
     public RecipeProvider(String databaseName) {
-        MongoClient mongoClient = new MongoClient();
-        db = mongoClient.getDatabase(databaseName);
+        super(databaseName, "recipe", Recipe.class);
     }
 
-    private Recipe readRecipe(Document doc){
-        Collection<Ingredient> ingredients = doc.getList("ingredients", Ingredient.class);
-        Collection<ObjectId> ratingIds = doc.getList("ratings", ObjectId.class);
-        Collection<String> tags = doc.getList("tags", String.class);
-        Collection<Category> categories =
-                doc.getList("categories", String.class)
-                        .stream().map(Category::getCategory)
-                        .collect(Collectors.toList());
-        return new Recipe(
-                doc.getObjectId("_id"),
-                doc.getString("name"),
-                doc.getString("image"),
+    public static void main(String[] args) {
+        RecipeProvider repr = new RecipeProvider("JCookTest");
+        LinkedList<Ingredient> ingredients = new LinkedList<>(Arrays.asList(
+                new Ingredient("a", 1, "l"),
+                new Ingredient("b", 1, "l"),
+                new Ingredient("c", 1, "l")
+        ));
+        Recipe recipe = new Recipe(
+                "Test",
+                "path",
                 ingredients,
-                ratingIds,
-                tags,
-                categories);
-    }
-
-    public Collection<Recipe> getRecipes(RecipeFilter filter){
-        return db.getCollection("recipe")
-                .find(filter.getQuery())
-                .map(this::readRecipe)
-                .into(new LinkedList<>());
-    }
-
-    public Collection<Rating> getRatings(Collection<ObjectId> ids) {
-
-        Collection<Bson> idsQuery = ids.stream()
-                .map(id -> Filters.eq("_id", id))
-                .collect(Collectors.toList());
-        return db.getCollection("ratings")
-                .find(Filters.or(idsQuery), Rating.class)
-                .into(new LinkedList<>());
+                new LinkedList<>(Collections.singleton(ObjectId.get())),
+                new LinkedList<>(Collections.singletonList("tag")),
+                new LinkedList<>(Collections.singletonList(Category.ALCOHOL))
+        );
+        repr.addObject(recipe);
+        System.out.println(repr.getObjects(new CategoryFilter(Category.ALCOHOL)));
     }
 }

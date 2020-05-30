@@ -1,10 +1,11 @@
 package models;
 
+import com.mongodb.BasicDBObject;
 import org.bson.types.ObjectId;
 
 import java.util.Date;
 
-public class Rating {
+public class Rating extends BasicDBObject {
     ObjectId id;
     int stars;
     String description;

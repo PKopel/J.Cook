@@ -2,6 +2,6 @@ package filters;
 
 import org.bson.conversions.Bson;
 
-public interface RecipeFilter {
+public interface Filter {
     Bson getQuery();
 }

@@ -3,7 +3,7 @@ package filters;
 import com.mongodb.client.model.Filters;
 import org.bson.conversions.Bson;
 
-public class NameFilter implements RecipeFilter {
+public class NameFilter implements Filter {
     private final String name;
 
     public NameFilter(String name){
