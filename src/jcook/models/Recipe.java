@@ -1,5 +1,6 @@
 package jcook.models;
 
+import javafx.scene.image.Image;
 import org.bson.types.ObjectId;
 
 import java.util.Collection;
@@ -27,5 +28,18 @@ public class Recipe {
         this.ratingIds = ratingIds;
         this.tags = tags;
         this.categories = categories;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    public Image getImage() {
+        return new Image(getClass().getResourceAsStream("/images/"+imagePath));
+    }
+
+    public String getName() {
+        return this.name;
     }
 }
