@@ -19,6 +19,8 @@ public class CombinedFilter implements Filter {
         return filters.add(filter);
     }
 
+    public boolean removeFilter(Filter filter) {return filters.remove(filter);}
+
     @Override
     public Bson getQuery() {
         return combiningFun.apply(filters.stream().map(Filter::getQuery).collect(Collectors.toList()));
