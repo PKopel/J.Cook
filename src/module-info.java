@@ -5,4 +5,6 @@ module JCook {
 
     opens jcook.controllers;
     opens jcook.sample;
+
+    exports jcook.models;
 }
