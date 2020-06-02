@@ -13,7 +13,8 @@ public class LoginController {
     @FXML
     Button loginButton;
 
-    private StackPane mainPane;
+    @FXML
+    StackPane mainPane;
 
     public LoginController() { }
 
@@ -25,6 +26,8 @@ public class LoginController {
                 Pane recipeListPane = loader.load();
                 mainPane.getChildren().clear();
                 mainPane.getChildren().add(recipeListPane);
+                RecipeListController controller = loader.getController();
+                controller.setMainPane(mainPane);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -32,7 +35,4 @@ public class LoginController {
         });
     }
 
-    public void setMainPane(StackPane mainPane) {
-        this.mainPane = mainPane;
-    }
 }

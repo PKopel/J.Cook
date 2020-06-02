@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableStringValue;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +19,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import jcook.filters.CombinedFilter;
 import jcook.filters.Filter;
 import jcook.filters.NameFilter;
@@ -32,6 +35,7 @@ public class RecipeListController {
     private CombinedFilter currentFilter = new CombinedFilter(Filters::and);
     private RecipeProvider recipeProvider = new RecipeProvider("JCookTest");
     private final int fixedCellSize = 50;
+    private final int fixedFilterCellSize = 30;
 
     @FXML
     TableView<Recipe> recipeTable;
@@ -50,11 +54,30 @@ public class RecipeListController {
     @FXML
     Button nameFilterButton;
 
+    @FXML
+    ComboBox userButtons;
+
+    private StackPane mainPane;
+
     // TODO: Would be nice to have returned types as Observables
 
     @FXML
     public void initialize() {
         currentFilter.addFilter(new NameFilter(""));
+
+        initRecipeTable();
+        initFilterList();
+        initUserButtons();
+
+        nameFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
+            currentFilter.addFilter(new NameFilter(nameFilterTextField.getText()));
+            recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
+            filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
+        });
+
+    }
+
+    private void initRecipeTable() {
         // TODO: Consider changing return types from Recipe to StringProperty, etc.
         this.recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
         this.iconColumn.setCellFactory(param -> {
@@ -75,7 +98,10 @@ public class RecipeListController {
         this.iconColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
         this.nameColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
         this.ratingColumn.setCellValueFactory(cellData -> cellData.getValue().getAverageRating().asObject());
+    }
 
+    private void initFilterList() {
+        filtersList.setFixedCellSize(fixedFilterCellSize);
         filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         filtersList.setCellFactory(param -> {
             final HBox hbox = new HBox();
@@ -105,12 +131,19 @@ public class RecipeListController {
             };
             return cell;
         });
+    }
 
-        nameFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
-            currentFilter.addFilter(new NameFilter(nameFilterTextField.getText()));
-            recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
-            filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
-        });
+    private void initUserButtons() {
+        List<Button> buttons = new ArrayList<>();
+        Button openProfileButton = new Button("Open profile");
+        Button logOutButton = new Button("Log out");
+        buttons.add(openProfileButton);
+        buttons.add(logOutButton);
+        ObservableList<Button> obsButtons = FXCollections.observableList(buttons);
+        userButtons.setItems(obsButtons);
+    }
 
+    public void setMainPane(StackPane mainPane) {
+        this.mainPane = mainPane;
     }
 }
