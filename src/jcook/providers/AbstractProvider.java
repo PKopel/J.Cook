@@ -35,7 +35,7 @@ public abstract class AbstractProvider<T> {
         db = mongoClient.getDatabase(databaseName);
     }
 
-    public Collection<T> getObjects(Filter filter) {
+    public List<T> getObjects(Filter filter) {
         return db.getCollection(collectionName, clazz)
                 .find(filter.getQuery())
                 .into(new LinkedList<>());

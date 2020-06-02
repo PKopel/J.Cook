@@ -16,6 +16,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import jcook.filters.CombinedFilter;
 import jcook.filters.Filter;
 import jcook.filters.NameFilter;
@@ -42,17 +44,19 @@ public class RecipeListController {
     @FXML
     TableColumn<Recipe, Double> ratingColumn;
     @FXML
-    ListView filtersList;
+    ListView<Filter> filtersList;
     @FXML
     TextField nameFilterTextField;
     @FXML
     Button nameFilterButton;
 
+    // TODO: Would be nice to have returned types as Observables
+
     @FXML
     public void initialize() {
         currentFilter.addFilter(new NameFilter(""));
         // TODO: Consider changing return types from Recipe to StringProperty, etc.
-        this.recipeTable.setItems(FXCollections.observableList((List)recipeProvider.getObjects(currentFilter)));
+        this.recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
         this.iconColumn.setCellFactory(param -> {
             final ImageView imageView = new ImageView();
             imageView.setFitWidth(fixedCellSize);
@@ -73,28 +77,39 @@ public class RecipeListController {
         this.ratingColumn.setCellValueFactory(cellData -> cellData.getValue().getAverageRating().asObject());
 
         filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
-        filtersList.setCellFactory(param -> new ListCell<Filter>() {
-            private Button removeFilterButton;
-            @Override
-            public void updateItem(Filter filter, boolean empty) {
-                super.updateItem(filter, empty);
-                if(empty) {
-                    setText(null);
-                } else {
-                    setText(filter.toString());
-                    removeFilterButton = new Button("X");
-                    removeFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
-                        currentFilter.removeFilter(filter);
-                        filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
-                    });
-                    this.getChildren().add(removeFilterButton);
+        filtersList.setCellFactory(param -> {
+            final HBox hbox = new HBox();
+            final Button removeFilterButton = new Button("X");
+            final Label label = new Label("Empty");
+            final Filter[] f = new Filter[1];
+
+            removeFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
+                currentFilter.removeFilter(f[0]);
+                filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
+                recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
+            });
+
+            hbox.getChildren().addAll(label, removeFilterButton);
+            ListCell<Filter> cell = new ListCell<>() {
+                @Override
+                public void updateItem(Filter filter, boolean empty) {
+                    super.updateItem(filter, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        label.setText(filter.toString());
+                        f[0] = filter;
+                        setGraphic(hbox);
+                    }
                 }
-            }
+            };
+            return cell;
         });
 
         nameFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
             currentFilter.addFilter(new NameFilter(nameFilterTextField.getText()));
-            recipeTable.setItems(FXCollections.observableList((List) recipeProvider.getObjects(currentFilter)));
+            recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
+            filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         });
 
     }
