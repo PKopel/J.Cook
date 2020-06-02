@@ -20,4 +20,9 @@ public class IdFilter implements Filter {
                 .map(id -> Filters.eq("_id", id))
                 .collect(Collectors.toList()));
     }
+
+    @Override
+    public String toString() {
+        return "Id("+ids+")";
+    }
 }

@@ -2,15 +2,19 @@ package jcook.controllers;
 
 import com.mongodb.client.model.Filters;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableStringValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import jcook.filters.CombinedFilter;
 import jcook.filters.Filter;
@@ -24,12 +28,21 @@ import java.util.*;
 public class RecipeListController {
 
     private CombinedFilter currentFilter = new CombinedFilter(Filters::and);
-    private NameFilter nameFilter = null;
     private RecipeProvider recipeProvider = new RecipeProvider("JCookTest");
     private final int fixedCellSize = 50;
 
     @FXML
-    ListView list;
+    TableView<Recipe> recipeTable;
+    @FXML
+    TableColumn<Recipe, Image> iconColumn;
+    @FXML
+    TableColumn<Recipe, String> nameColumn;
+
+    // TODO: change to display stars
+    @FXML
+    TableColumn<Recipe, Double> ratingColumn;
+    @FXML
+    ListView filtersList;
     @FXML
     TextField nameFilterTextField;
     @FXML
@@ -37,36 +50,51 @@ public class RecipeListController {
 
     @FXML
     public void initialize() {
-        currentFilter.addFilter(new NameFilter("lemonade"));
+        currentFilter.addFilter(new NameFilter(""));
+        // TODO: Consider changing return types from Recipe to StringProperty, etc.
+        this.recipeTable.setItems(FXCollections.observableList((List)recipeProvider.getObjects(currentFilter)));
+        this.iconColumn.setCellFactory(param -> {
+            final ImageView imageView = new ImageView();
+            imageView.setFitWidth(fixedCellSize);
+            imageView.setFitHeight(fixedCellSize);
+            TableCell<Recipe, Image> cell = new TableCell<>() {
+                @Override
+                public void updateItem(Image image, boolean empty) {
+                    if(!empty) {
+                        imageView.setImage(image);
+                    }
+                }
+            };
+            cell.setGraphic(imageView);
+            return cell;
+        });
+        this.iconColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
+        this.nameColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
+        this.ratingColumn.setCellValueFactory(cellData -> cellData.getValue().getAverageRating().asObject());
 
-        list.setFixedCellSize(fixedCellSize);
-        list.setItems(FXCollections.observableList((List) recipeProvider.getObjects(currentFilter)));
-        list.setCellFactory(param -> new ListCell<Recipe>() {
-            private ImageView icon = new ImageView();
+        filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
+        filtersList.setCellFactory(param -> new ListCell<Filter>() {
+            private Button removeFilterButton;
             @Override
-            public void updateItem(Recipe recipe, boolean empty) {
-                super.updateItem(recipe, empty);
+            public void updateItem(Filter filter, boolean empty) {
+                super.updateItem(filter, empty);
                 if(empty) {
                     setText(null);
-                    setGraphic(null);
                 } else {
-                    icon.setImage(recipe.getImage());
-                    icon.setFitHeight(fixedCellSize);
-                    icon.setFitWidth(fixedCellSize);
-                    setText(recipe.getName());
-                    setGraphic(icon);
-                    // this.setBorder(new Border(new BorderStroke(Paint.valueOf("000000"), BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
+                    setText(filter.toString());
+                    removeFilterButton = new Button("X");
+                    removeFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
+                        currentFilter.removeFilter(filter);
+                        filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
+                    });
+                    this.getChildren().add(removeFilterButton);
                 }
             }
         });
 
         nameFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
-            if(nameFilter != null) {
-                currentFilter.removeFilter(nameFilter);
-            }
-            nameFilter = new NameFilter(nameFilterTextField.getText());
-            currentFilter.addFilter(nameFilter);
-            list.setItems(FXCollections.observableList((List) recipeProvider.getObjects(currentFilter)));
+            currentFilter.addFilter(new NameFilter(nameFilterTextField.getText()));
+            recipeTable.setItems(FXCollections.observableList((List) recipeProvider.getObjects(currentFilter)));
         });
 
     }

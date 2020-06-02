@@ -15,4 +15,9 @@ public class CategoryFilter implements Filter {
     public Bson getQuery() {
         return Filters.regex("categories", category.name());
     }
+
+    @Override
+    public String toString() {
+        return "Category("+category+")";
+    }
 }

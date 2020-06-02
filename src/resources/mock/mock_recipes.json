@@ -18,7 +18,8 @@
       "unit": "g"
     }],
   "ratings": [],
-  "tags": ["beverages", "sugar included"]
+  "categories": ["beverage", "vegan"],
+  "tags": ["sugar included"]
 }
 {
   "name": "chips",
@@ -36,5 +37,6 @@
     }
   ],
   "ratings": [],
-  "tags": ["dinner"]
+  "categories": ["vegan"],
+  "tags": []
 }

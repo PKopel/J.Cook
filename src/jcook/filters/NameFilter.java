@@ -14,4 +14,9 @@ public class NameFilter implements Filter {
     public Bson getQuery() {
         return Filters.regex("name", name);
     }
+
+    @Override
+    public String toString() {
+        return "Name("+name+")";
+    }
 }

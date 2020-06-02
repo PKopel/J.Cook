@@ -11,6 +11,7 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
