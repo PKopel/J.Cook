@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -7,30 +8,51 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" stylesheets="@../stylesheets/recipeListStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jcook.controllers.RecipeListController">
    <children>
-      <ListView fx:id="filtersList" layoutX="806.0" layoutY="121.0" prefHeight="647.0" prefWidth="218.0" />
-      <TableView fx:id="recipeTable" layoutX="210.0" layoutY="95.0" prefHeight="673.0" prefWidth="592.0">
-        <columns>
-          <TableColumn fx:id="iconColumn" prefWidth="100.0" text="Icon" />
-          <TableColumn fx:id="nameColumn" prefWidth="371.0" text="Name" />
-            <TableColumn fx:id="ratingColumn" prefWidth="105.0" text="Average rating" />
-        </columns>
-      </TableView>
+      <GridPane fx:id="recipeListContentPane" layoutY="95.0" prefHeight="673.0" prefWidth="1024.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <VBox GridPane.columnIndex="2">
+               <children>
+                  <Label prefHeight="26.0" prefWidth="218.0" text="Current filters" />
+                  <ListView fx:id="filtersList" prefHeight="647.0" prefWidth="211.0" />
+               </children>
+            </VBox>
+            <TableView fx:id="recipeTable" prefHeight="673.0" prefWidth="592.0" GridPane.columnIndex="1">
+              <columns>
+                <TableColumn fx:id="iconColumn" prefWidth="100.0" text="Icon" />
+                <TableColumn fx:id="nameColumn" prefWidth="371.0" text="Name" />
+                  <TableColumn fx:id="ratingColumn" prefWidth="105.0" text="Average rating" />
+              </columns>
+            </TableView>
+            <VBox fx:id="filterAddingList" maxWidth="203.0" prefHeight="673.0" prefWidth="203.0" style="-fx-background-color: white;" />
+         </children>
+      </GridPane>
       <Pane fx:id="header" layoutY="-1.0" prefHeight="83.0" prefWidth="1024.0" style="-fx-background-color: grey;">
          <children>
-            <ComboBox fx:id="userButtons" layoutX="860.0" layoutY="23.0" prefHeight="45.0" prefWidth="150.0" promptText="User123" />
-            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="791.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+            <ComboBox fx:id="userButtons" layoutX="860.0" layoutY="19.0" prefHeight="45.0" prefWidth="150.0" promptText="User123" />
+            <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="792.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/j_cook.jpeg" />
                </image>
             </ImageView>
+            <Button fx:id="recipeFormButton" layoutX="28.0" layoutY="12.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="174.0" text="Add recipes" />
+            <Button fx:id="recipeListButton" layoutX="229.0" layoutY="12.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="174.0" text="Explore recipes" />
          </children>
       </Pane>
-      <VBox fx:id="filterAddingList" layoutY="96.0" maxWidth="200.0" prefHeight="666.0" prefWidth="200.0" style="-fx-background-color: white;" />
-      <Label layoutX="806.0" layoutY="95.0" prefHeight="26.0" prefWidth="218.0" text="Current filters" />
    </children>
 </Pane>

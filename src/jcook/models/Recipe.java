@@ -3,18 +3,20 @@ package jcook.models;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
 import java.util.Collection;
 import java.util.OptionalDouble;
 
 public class Recipe {
     private String name;
+    private String description;
 
-    @BsonProperty(value = "image_path")
-    private String imagePath;
+    private byte[] image;
     private Collection<Ingredient> ingredients;
     private Collection<Rating> ratings;
     private Collection<String> tags;
@@ -25,15 +27,15 @@ public class Recipe {
 
     public Recipe(
             String name,
-            String imagePath,
+            String description,
+            byte[] image,
             Collection<Ingredient> ingredients,
-            Collection<Rating> ratings,
             Collection<String> tags,
             Collection<Category> categories) {
         this.name = name;
-        this.imagePath = imagePath;
+        this.description = description;
+        this.image = image;
         this.ingredients = ingredients;
-        this.ratings = ratings;
         this.tags = tags;
         this.categories = categories;
     }
@@ -41,10 +43,6 @@ public class Recipe {
     @Override
     public String toString() {
         return this.name;
-    }
-
-    public Image getImage() {
-        return new Image(getClass().getResourceAsStream(imagePath));
     }
 
     public String getName() {
@@ -55,12 +53,12 @@ public class Recipe {
         this.name = name;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public Collection<Ingredient> getIngredients() {
@@ -99,8 +97,16 @@ public class Recipe {
         this.categories = categories;
     }
 
-    public BigDecimal getAverageRating() {
+    public BigDecimal avgRating() {
         OptionalDouble sum = ratings.stream().mapToDouble(Rating::getStars).average();
-        return new BigDecimal(sum.isPresent() ? sum.getAsDouble() : 0.0).setScale(1, RoundingMode.HALF_UP);
+        return BigDecimal.valueOf(sum.isPresent() ? sum.getAsDouble() : 0.0).setScale(1, RoundingMode.HALF_UP);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
