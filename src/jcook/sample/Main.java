@@ -13,12 +13,21 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/resources/fxml/MainPane.fxml"));
+/*
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/RecipeForm.fxml"));
+        primaryStage.setScene(new Scene(root, 800, 800));
+        primaryStage.show();
+
+ */
+
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainPane.fxml"));
 
         primaryStage.setScene(new Scene(root, 800, 615));
         primaryStage.setTitle("J.Cook");
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/resources/images/j_cook.jpeg")));
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/j_cook.jpeg")));
         primaryStage.show();
+
+
     }
 
 

@@ -25,7 +25,7 @@ public class MainController {
                 System.out.println("WTF");
             }
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/LoginPane.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LoginPane.fxml"));
                 Pane loginPane = loader.load();
                 mainPane.getChildren().clear();
                 mainPane.getChildren().add(loginPane);

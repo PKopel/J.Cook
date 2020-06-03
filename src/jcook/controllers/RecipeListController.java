@@ -63,7 +63,7 @@ public class RecipeListController {
         });
         this.iconColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
         this.nameColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
-        this.ratingColumn.setCellValueFactory(cellData -> cellData.getValue().getAverageRating().asObject());
+        this.ratingColumn.setCellValueFactory(cellData -> cellData.getValue().avgRating().asObject());
 
         filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         filtersList.setCellFactory(param -> {
