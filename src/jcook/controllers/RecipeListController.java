@@ -2,12 +2,10 @@ package jcook.controllers;
 
 import com.mongodb.client.model.Filters;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -25,7 +23,6 @@ import jcook.models.Recipe;
 import jcook.providers.RecipeProvider;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class RecipeListController {
@@ -60,7 +57,7 @@ public class RecipeListController {
     Button nameFilterButton;*/
 
     @FXML
-    ComboBox userButtons;
+    ComboBox<Button> userButtons;
 
     private StackPane mainPane;
 
@@ -114,7 +111,7 @@ public class RecipeListController {
                         setText(null);
                         setGraphic(null);
                     } else {
-                        setText(getTableRow().getItem().getAverageRating().toString());
+                        setText(getTableRow().getItem().avgRating().toString());
                         setGraphic(imageView);
                     }
                 }
