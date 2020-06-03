@@ -1,7 +1,5 @@
 package jcook.models;
 
-import java.util.Date;
-
 public class Rating {
     private double stars;
     private String description;

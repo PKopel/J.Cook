@@ -1,4 +1,4 @@
-package jcook.sample;
+package jcook;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
