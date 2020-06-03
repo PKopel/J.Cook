@@ -9,11 +9,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import jcook.filters.CategoryFilter;
 import jcook.filters.CombinedFilter;
 import jcook.filters.Filter;
@@ -153,10 +156,11 @@ public class RecipeListController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RecipeForm.fxml"));
                 GridPane recipeFormPane = loader.load();
-                mainPane.getChildren().clear();
-                mainPane.getChildren().add(recipeFormPane);
-                RecipeFormController controller = loader.getController();
-                controller.setMainPane(mainPane);
+                final Stage recipeForm = new Stage();
+                recipeForm.initModality(Modality.APPLICATION_MODAL);
+                Scene recipeFormScene = new Scene(recipeFormPane, 600, 700);
+                recipeForm.setScene(recipeFormScene);
+                recipeForm.show();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

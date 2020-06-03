@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import jcook.models.Category;
 import jcook.models.Ingredient;
 import jcook.models.Recipe;
@@ -126,7 +127,7 @@ public class RecipeFormController {
         image.setOnAction(actionEvent -> {
                     FileChooser fileChooser = new FileChooser();
                     FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("images (*.jpg,*.jpeg, *.png)",
-                            "*.jpg","*.jpeg","*.png");
+                            "*.jpg", "*.jpeg", "*.png");
                     fileChooser.getExtensionFilters().add(extFilter);
                     File file = fileChooser.showOpenDialog(null);
                     if (file != null) {
@@ -141,14 +142,17 @@ public class RecipeFormController {
                     }
                 }
         );
-        save.setOnAction(event -> RecipeProvider.getInstance().addObject(new Recipe(
-                name.getText(),
-                description.getText(),
-                imageBytes,
-                ingredientList,
-                tagList,
-                categoryList
-        )));
+        save.setOnAction(event -> {
+            RecipeProvider.getInstance().addObject(new Recipe(
+                    name.getText(),
+                    description.getText(),
+                    imageBytes,
+                    ingredientList,
+                    tagList,
+                    categoryList
+            ));
+            ((Stage) save.getScene().getWindow()).close();
+        });
     }
 
     public void setMainPane(StackPane mainPane) {
