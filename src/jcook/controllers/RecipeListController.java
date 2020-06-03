@@ -1,22 +1,14 @@
 package jcook.controllers;
 
 import com.mongodb.client.model.Filters;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableStringValue;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import jcook.filters.CombinedFilter;
 import jcook.filters.Filter;
@@ -24,13 +16,10 @@ import jcook.filters.NameFilter;
 import jcook.models.Recipe;
 import jcook.providers.RecipeProvider;
 
-
-import java.util.*;
-
 public class RecipeListController {
 
-    private CombinedFilter currentFilter = new CombinedFilter(Filters::and);
-    private RecipeProvider recipeProvider = new RecipeProvider("JCookTest");
+    private final CombinedFilter currentFilter = new CombinedFilter(Filters::and);
+    private final RecipeProvider recipeProvider = RecipeProvider.getInstance();
     private final int fixedCellSize = 50;
 
     @FXML
@@ -64,7 +53,7 @@ public class RecipeListController {
             TableCell<Recipe, Image> cell = new TableCell<>() {
                 @Override
                 public void updateItem(Image image, boolean empty) {
-                    if(!empty) {
+                    if (!empty) {
                         imageView.setImage(image);
                     }
                 }
@@ -90,7 +79,7 @@ public class RecipeListController {
             });
 
             hbox.getChildren().addAll(label, removeFilterButton);
-            ListCell<Filter> cell = new ListCell<>() {
+            return new ListCell<>() {
                 @Override
                 public void updateItem(Filter filter, boolean empty) {
                     super.updateItem(filter, empty);
@@ -103,7 +92,6 @@ public class RecipeListController {
                     }
                 }
             };
-            return cell;
         });
 
         nameFilterButton.addEventHandler(ActionEvent.ACTION, e -> {

@@ -7,4 +7,5 @@ module JCook {
     opens jcook.sample;
 
     exports jcook.models;
+    exports jcook.sample;
 }
