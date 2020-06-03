@@ -4,12 +4,12 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import jcook.filters.Filter;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,10 +21,10 @@ public abstract class AbstractProvider<T> {
     private final String collectionName;
     private final Class<T> clazz;
 
-    protected AbstractProvider(String databaseName, String collectionName, Class<T> clazz) {
+    protected AbstractProvider(String connectionName, String databaseName, String collectionName, Class<T> clazz) {
         this.collectionName = collectionName;
         this.clazz = clazz;
-        ConnectionString connection = new ConnectionString("mongodb://127.0.0.1");
+        ConnectionString connection = new ConnectionString(connectionName);
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         MongoClientSettings settings = MongoClientSettings.builder()
@@ -36,8 +36,9 @@ public abstract class AbstractProvider<T> {
     }
 
     public List<T> getObjects(Filter filter) {
-        return db.getCollection(collectionName, clazz)
-                .find(filter.getQuery())
+        MongoCollection<T> collection = db.getCollection(collectionName, clazz);
+        return (filter.getQuery() != null ?
+                collection.find(filter.getQuery()) : collection.find())
                 .into(new LinkedList<>());
     }
 

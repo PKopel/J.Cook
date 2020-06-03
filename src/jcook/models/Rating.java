@@ -3,24 +3,24 @@ package jcook.models;
 import java.util.Date;
 
 public class Rating {
-    private int stars;
+    private double stars;
     private String description;
-    private Date date;
+    private String date;
 
     public Rating() {
     }
 
-    public Rating(int stars, String description, Date date) {
+    public Rating(int stars, String description, String date) {
         this.stars = stars;
         this.description = description;
         this.date = date;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -32,11 +32,11 @@ public class Rating {
         this.description = description;
     }
 
-    public int getStars() {
+    public double getStars() {
         return stars;
     }
 
-    public void setStars(int stars) {
+    public void setStars(double stars) {
         this.stars = stars;
     }
 }
