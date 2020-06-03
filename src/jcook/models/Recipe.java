@@ -3,11 +3,13 @@ package jcook.models;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
-
+import jcook.filters.IdFilter;
+import jcook.providers.RatingProvider;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
 import java.util.Collection;
+import java.util.OptionalDouble;
 
 public class Recipe {
     private String name;
@@ -44,7 +46,7 @@ public class Recipe {
     }
 
     public Image getImage() {
-        return new Image(getClass().getResourceAsStream("/images/"+imagePath));
+        return new Image(getClass().getResourceAsStream(imagePath));
     }
 
     public String getName() {
@@ -95,8 +97,10 @@ public class Recipe {
         this.categories = categories;
     }
 
-    // TODO: implement
     public DoubleProperty getAverageRating() {
-        return new SimpleDoubleProperty(5.0);
+        if (ratingIds.isEmpty()) return new SimpleDoubleProperty(0.0);
+        Collection<Rating> ratings = RatingProvider.getInstance().getObjects(new IdFilter(ratingIds));
+        OptionalDouble sum = ratings.stream().mapToDouble(Rating::getStars).average();
+        return new SimpleDoubleProperty(sum.isPresent() ? sum.getAsDouble() : 0.0);
     }
 }

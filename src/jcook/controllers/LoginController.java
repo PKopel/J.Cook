@@ -21,7 +21,7 @@ public class LoginController {
     public void initialize() {
         loginButton.addEventHandler(ActionEvent.ACTION, e -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RecipeListPane.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/RecipeListPane.fxml"));
                 Pane recipeListPane = loader.load();
                 mainPane.getChildren().clear();
                 mainPane.getChildren().add(recipeListPane);

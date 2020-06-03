@@ -2,7 +2,6 @@ package jcook.filters;
 
 import org.bson.conversions.Bson;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -16,11 +15,13 @@ public class CombinedFilter implements Filter {
         this.combiningFun = combiningFun;
     }
 
-    public boolean addFilter(Filter filter) {
-        return filters.add(filter);
+    public void addFilter(Filter filter) {
+        filters.add(filter);
     }
 
-    public boolean removeFilter(Filter filter) {return filters.remove(filter);}
+    public void removeFilter(Filter filter) {
+        filters.remove(filter);
+    }
 
     public List<Filter> getFilters() {
         return filters;
@@ -28,7 +29,8 @@ public class CombinedFilter implements Filter {
 
     @Override
     public Bson getQuery() {
-        return combiningFun.apply(filters.stream().map(Filter::getQuery).collect(Collectors.toList()));
+        return filters.isEmpty() ? null :
+                combiningFun.apply(filters.stream().map(Filter::getQuery).collect(Collectors.toList()));
     }
 
 }
