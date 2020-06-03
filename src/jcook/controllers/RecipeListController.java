@@ -2,18 +2,18 @@ package jcook.controllers;
 
 import com.mongodb.client.model.Filters;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import jcook.filters.CategoryFilter;
 import jcook.filters.CombinedFilter;
 import jcook.filters.Filter;
@@ -22,7 +22,9 @@ import jcook.models.Category;
 import jcook.models.Recipe;
 import jcook.providers.RecipeProvider;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class RecipeListController {
@@ -32,8 +34,6 @@ public class RecipeListController {
     private final int fixedCellSize = 50;
     private final int fixedFilterCellSize = 30;
 
-    @FXML
-    Pane header;
     @FXML
     TableView<Recipe> recipeTable;
     @FXML
@@ -49,16 +49,19 @@ public class RecipeListController {
     @FXML
     VBox filterAddingList;
 
-    private List<VBox> filterForms = new ArrayList<>();
-
-    /*@FXML
-    TextField nameFilterTextField;
-    @FXML
-    Button nameFilterButton;*/
+    private final List<VBox> filterForms = new ArrayList<>();
 
     @FXML
     ComboBox<Button> userButtons;
 
+    @FXML
+    Pane header;
+    @FXML
+    Button recipeFormButton;
+    @FXML
+    Button recipeListButton;
+    @FXML
+    GridPane recipeListContentPane;
     private StackPane mainPane;
 
     // TODO: Would be nice to have returned types as Observables
@@ -70,14 +73,7 @@ public class RecipeListController {
         initRecipeTable();
         initFilterList();
         initFilterAddingList();
-        initUserButtons();
-
-        /*nameFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
-            currentFilter.addFilter(new NameFilter(nameFilterTextField.getText()));
-            recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
-            filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
-        });
-*/
+        initHeader();
     }
 
     private void initRecipeTable() {
@@ -100,6 +96,7 @@ public class RecipeListController {
         });
         this.iconColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
         this.nameColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
+
         this.ratingColumn.setCellFactory(param -> {
             final ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/images/star.png")));
             imageView.setFitHeight(fixedCellSize*4/5.0);
@@ -151,7 +148,21 @@ public class RecipeListController {
         });
     }
 
-    private void initUserButtons() {
+    private void initHeader() {
+        recipeFormButton.addEventHandler(ActionEvent.ACTION, e -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RecipeForm.fxml"));
+                GridPane recipeFormPane = loader.load();
+                mainPane.getChildren().clear();
+                mainPane.getChildren().add(recipeFormPane);
+                RecipeFormController controller = loader.getController();
+                controller.setMainPane(mainPane);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // TODO: Fix it
         List<Button> buttons = new ArrayList<>();
         Button openProfileButton = new Button("Open profile");
         Button logOutButton = new Button("Log out");

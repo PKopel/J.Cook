@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import jcook.models.Category;
 import jcook.models.Ingredient;
@@ -42,6 +43,8 @@ public class RecipeFormController {
     TextField name;
     @FXML
     TextArea description;
+
+    StackPane mainPane;
 
     private BiConsumer<GridPane, Button> nextCategory(int index) {
         return (grid, add) -> {
@@ -146,5 +149,9 @@ public class RecipeFormController {
                 tagList,
                 categoryList
         )));
+    }
+
+    public void setMainPane(StackPane mainPane) {
+        this.mainPane = mainPane;
     }
 }

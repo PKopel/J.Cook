@@ -1,7 +1,14 @@
 package jcook.models;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.image.Image;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
 import java.util.Collection;
 import java.util.OptionalDouble;
 
@@ -70,7 +77,7 @@ public class Recipe {
         this.ratings = ratings;
     }
 
-    public void addRating(Rating rating) {
+    public void addRating(Rating rating){
         ratings.add(rating);
     }
 
