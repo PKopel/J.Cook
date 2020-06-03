@@ -9,7 +9,6 @@ import jcook.filters.Filter;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,6 +37,12 @@ public abstract class AbstractProvider<T> {
     public List<T> getObjects(Filter filter) {
         return db.getCollection(collectionName, clazz)
                 .find(filter.getQuery())
+                .into(new LinkedList<>());
+    }
+
+    public List<T> getObjects() {
+        return db.getCollection(collectionName, clazz)
+                .find()
                 .into(new LinkedList<>());
     }
 
