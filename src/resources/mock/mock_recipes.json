@@ -1,4 +1,4 @@
-{
+[{
   "name": "lemonade",
   "image_path": "lemonade.png",
   "ingredients": [
@@ -20,7 +20,7 @@
   "ratings": [],
   "categories": ["beverage", "vegan"],
   "tags": ["sugar included"]
-}
+},
 {
   "name": "chips",
   "image": "chips.png",
@@ -31,7 +31,7 @@
       "unit": "piece(s)"
     },
     {
-      "oil",
+      "name":"oil",
       "quantity": 100,
       "unit": "ml"
     }
@@ -39,4 +39,4 @@
   "ratings": [],
   "categories": ["vegan"],
   "tags": []
-}
+}]
