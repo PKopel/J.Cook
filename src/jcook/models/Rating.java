@@ -1,4 +1,4 @@
-package models;
+package jcook.models;
 
 import java.util.Date;
 

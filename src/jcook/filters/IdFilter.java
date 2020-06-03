@@ -1,4 +1,4 @@
-package filters;
+package jcook.filters;
 
 import com.mongodb.client.model.Filters;
 import org.bson.conversions.Bson;
@@ -19,5 +19,10 @@ public class IdFilter implements Filter {
         return Filters.or(ids.stream()
                 .map(id -> Filters.eq("_id", id))
                 .collect(Collectors.toList()));
+    }
+
+    @Override
+    public String toString() {
+        return "Id("+ids+")";
     }
 }

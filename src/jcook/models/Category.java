@@ -1,4 +1,4 @@
-package models;
+package jcook.models;
 
 public enum Category {
     BREAKFAST,

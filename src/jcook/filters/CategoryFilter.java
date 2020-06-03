@@ -1,7 +1,7 @@
-package filters;
+package jcook.filters;
 
 import com.mongodb.client.model.Filters;
-import models.Category;
+import jcook.models.Category;
 import org.bson.conversions.Bson;
 
 public class CategoryFilter implements Filter {
@@ -14,5 +14,10 @@ public class CategoryFilter implements Filter {
     @Override
     public Bson getQuery() {
         return Filters.regex("categories", category.name());
+    }
+
+    @Override
+    public String toString() {
+        return "Category("+category+")";
     }
 }

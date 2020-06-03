@@ -1,4 +1,4 @@
-package filters;
+package jcook.filters;
 
 import org.bson.conversions.Bson;
 

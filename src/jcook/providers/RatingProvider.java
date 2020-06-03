@@ -1,6 +1,7 @@
-package providers;
+package jcook.providers;
 
-import models.Rating;
+import jcook.models.Rating;
+
 
 public class RatingProvider extends AbstractProvider<Rating> {
     public RatingProvider(String databaseName) {

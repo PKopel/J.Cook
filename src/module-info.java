@@ -3,6 +3,8 @@ module JCook {
     requires javafx.controls;
     requires mongo.java.driver;
 
-    opens sample;
-    exports models;
+    opens jcook.controllers;
+    opens jcook.sample;
+
+    exports jcook.models;
 }

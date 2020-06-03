@@ -1,6 +1,6 @@
-package providers;
+package jcook.providers;
 
-import models.Recipe;
+import jcook.models.Recipe;
 
 
 public class RecipeProvider extends AbstractProvider<Recipe> {

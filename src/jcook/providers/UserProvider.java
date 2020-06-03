@@ -1,6 +1,6 @@
-package providers;
+package jcook.providers;
 
-import models.User;
+import jcook.models.User;
 
 public class UserProvider extends AbstractProvider<User> {
     public UserProvider(String databaseName) {
