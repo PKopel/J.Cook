@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import jcook.providers.RatingProvider;
 import jcook.providers.RecipeProvider;
 import jcook.providers.UserProvider;
 
@@ -24,9 +23,8 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        RecipeProvider.initialize("JCookTest");
-        RatingProvider.initialize("JCookTest");
-        UserProvider.initialize("JCookTest");
+        RecipeProvider.initialize("mongodb://127.0.0.1","JCookTest");
+        UserProvider.initialize("mongodb://127.0.0.1","JCookTest");
         launch(args);
     }
 }

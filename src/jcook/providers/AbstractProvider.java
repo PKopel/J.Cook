@@ -21,10 +21,10 @@ public abstract class AbstractProvider<T> {
     private final String collectionName;
     private final Class<T> clazz;
 
-    protected AbstractProvider(String databaseName, String collectionName, Class<T> clazz) {
+    protected AbstractProvider(String connectionName, String databaseName, String collectionName, Class<T> clazz) {
         this.collectionName = collectionName;
         this.clazz = clazz;
-        ConnectionString connection = new ConnectionString("mongodb://127.0.0.1");
+        ConnectionString connection = new ConnectionString(connectionName);
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         MongoClientSettings settings = MongoClientSettings.builder()
