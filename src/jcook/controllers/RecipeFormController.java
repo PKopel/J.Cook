@@ -9,11 +9,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import jcook.models.Category;
 import jcook.models.Ingredient;
 import jcook.models.Recipe;
 import jcook.providers.RecipeProvider;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -30,11 +34,10 @@ public class RecipeFormController {
     GridPane tagPane;
     List<String> tagList = new LinkedList<>();
     @FXML
-    Button reset;
-
-    @FXML
     Button save;
-
+    @FXML
+    Button image;
+    byte[] imageBytes;
     @FXML
     TextField name;
     @FXML
@@ -43,6 +46,8 @@ public class RecipeFormController {
     private BiConsumer<GridPane, Button> nextCategory(int index) {
         return (grid, add) -> {
             ComboBox<Category> categories = new ComboBox<>(FXCollections.observableArrayList(Category.values()));
+            categories.setPromptText("category");
+            categories.setPrefWidth(500.0);
             categories.valueProperty().addListener((a, oldValue, newValue) -> {
                 add.setDisable(categories.getValue() == null);
                 categoryList.set(GridPane.getRowIndex(add), newValue);
@@ -55,9 +60,12 @@ public class RecipeFormController {
         return (grid, add) -> {
             TextField ingredient = new TextField();
             ingredient.setPromptText("ingredient");
+            ingredient.setPrefWidth(400.0);
             TextField quantity = new TextField();
+            quantity.setPrefWidth(100.0);
             quantity.setPromptText("quantity");
             TextField unit = new TextField();
+            unit.setPrefWidth(50.0);
             unit.setPromptText("unit");
             ChangeListener<? super String> listener = (a, oldValue, newValue) -> {
                 add.setDisable(ingredient.getText().isBlank() || quantity.getText().isBlank());
@@ -81,11 +89,12 @@ public class RecipeFormController {
         return (grid, add) -> {
             TextField tag = new TextField();
             tag.setPromptText("tag");
+            tag.setPrefWidth(500.0);
             tag.textProperty().addListener((a, oldValue, newValue) -> {
                 add.setDisable(newValue.isEmpty());
                 tagList.set(GridPane.getRowIndex(add), newValue);
             });
-            grid.addRow(index, tag, add);
+            grid.addRow(index, add, tag);
         };
     }
 
@@ -111,10 +120,28 @@ public class RecipeFormController {
         insertRow(categoryPane, categoryList, 0, this::nextCategory);
         insertRow(ingredientPane, ingredientList, 0, this::nextIngredient);
         insertRow(tagPane, tagList, 0, this::nextTag);
+        image.setOnAction(actionEvent -> {
+                    FileChooser fileChooser = new FileChooser();
+                    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("images (*.jpg,*.jpeg, *.png)",
+                            "*.jpg","*.jpeg","*.png");
+                    fileChooser.getExtensionFilters().add(extFilter);
+                    File file = fileChooser.showOpenDialog(null);
+                    if (file != null) {
+                        imageBytes = new byte[(int) file.length()];
+                        try {
+                            FileInputStream input = new FileInputStream(file);
+                            input.read(imageBytes);
+                            input.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
         save.setOnAction(event -> RecipeProvider.getInstance().addObject(new Recipe(
                 name.getText(),
                 description.getText(),
-                /*TODO*/"image",
+                imageBytes,
                 ingredientList,
                 tagList,
                 categoryList

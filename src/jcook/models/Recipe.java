@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.OptionalDouble;
 
@@ -13,8 +14,7 @@ public class Recipe {
     private String name;
     private String description;
 
-    @BsonProperty(value = "image_path")
-    private String imagePath;
+    private byte[] image;
     private Collection<Ingredient> ingredients;
     private Collection<Rating> ratings;
     private Collection<String> tags;
@@ -26,13 +26,13 @@ public class Recipe {
     public Recipe(
             String name,
             String description,
-            String imagePath,
+            byte[] image,
             Collection<Ingredient> ingredients,
             Collection<String> tags,
             Collection<Category> categories) {
         this.name = name;
         this.description = description;
-        this.imagePath = imagePath;
+        this.image = image;
         this.ingredients = ingredients;
         this.tags = tags;
         this.categories = categories;
@@ -41,10 +41,6 @@ public class Recipe {
     @Override
     public String toString() {
         return this.name;
-    }
-    @BsonIgnore
-    public Image getImage() {
-        return new Image(getClass().getResourceAsStream(imagePath));
     }
 
     public String getName() {
@@ -55,12 +51,12 @@ public class Recipe {
         this.name = name;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public Collection<Ingredient> getIngredients() {
@@ -99,9 +95,9 @@ public class Recipe {
         this.categories = categories;
     }
 
-    public DoubleProperty avgRating() {
+    public BigDecimal avgRating() {
         OptionalDouble sum = ratings.stream().mapToDouble(Rating::getStars).average();
-        return new SimpleDoubleProperty(sum.isPresent() ? sum.getAsDouble() : 0.0);
+        return BigDecimal.valueOf(sum.isPresent() ? sum.getAsDouble() : 0.0);
     }
 
     public String getDescription() {
