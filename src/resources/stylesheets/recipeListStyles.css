@@ -10,7 +10,7 @@ VBox {
     -fx-text-alignment: center;
 }
 Label {
-    -fx-text-alignment: center;
+    -fx-alignment: center;
 }
 TableCell {
     -fx-font-size: 20px;

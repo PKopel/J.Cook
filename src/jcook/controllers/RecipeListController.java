@@ -79,6 +79,31 @@ public class RecipeListController {
     private void initRecipeTable() {
         // TODO: Consider changing return types from Recipe to StringProperty, etc.
         this.recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
+
+        // On-click handler
+        this.recipeTable.setRowFactory( param -> {
+            TableRow<Recipe> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(!row.isEmpty() && event.getClickCount() == 2) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RecipeView.fxml"));
+                        GridPane recipeViewPane = loader.load();
+                        RecipeViewController recipeViewController = loader.getController();
+                        recipeViewController.setRecipe(row.getItem());
+                        final Stage recipeView = new Stage();
+                        recipeView.initModality(Modality.APPLICATION_MODAL);
+                        Scene recipeViewScene = new Scene(recipeViewPane, 600, 700);
+                        recipeView.setScene(recipeViewScene);
+                        recipeView.show();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+            return row;
+        });
+
+        // Columns data factories
         this.iconColumn.setCellFactory(param -> {
             final ImageView imageView = new ImageView();
             imageView.setFitWidth(fixedCellSize);
@@ -197,7 +222,7 @@ public class RecipeListController {
             recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
             filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         });
-        nameFilter.getChildren().addAll(new Label("name"), categoryBox, addCategoryFilterButton);
+        nameFilter.getChildren().addAll(new Label("category"), categoryBox, addCategoryFilterButton);
         filterForms.add(categoryFilter);
 
         filterAddingList.getChildren().addAll(filterForms);
