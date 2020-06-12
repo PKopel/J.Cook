@@ -7,12 +7,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import jcook.filters.CategoryFilter;
@@ -146,8 +148,11 @@ public class RecipeListController {
         filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         filtersList.setCellFactory(param -> {
             final HBox hbox = new HBox();
+            hbox.setPrefWidth(filtersList.getPrefWidth());
             final Button removeFilterButton = new Button("X");
             final Label label = new Label("Empty");
+            label.setPrefWidth(filtersList.getWidth()-removeFilterButton.getWidth());
+            label.setTextAlignment(TextAlignment.LEFT);
             final Filter[] f = new Filter[1];
 
             removeFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
