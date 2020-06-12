@@ -91,6 +91,7 @@ public class Recipe {
     }
 
     public BigDecimal avgRating() {
+        if(ratings == null || ratings.isEmpty()) return BigDecimal.valueOf(0.0).setScale(1, RoundingMode.HALF_UP);
         OptionalDouble sum = ratings.stream().mapToDouble(Rating::getStars).average();
         return BigDecimal.valueOf(sum.isPresent() ? sum.getAsDouble() : 0.0).setScale(1, RoundingMode.HALF_UP);
     }
