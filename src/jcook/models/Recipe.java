@@ -1,5 +1,8 @@
 package jcook.models;
 
+import javafx.scene.image.Image;
+
+import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collection;
@@ -44,6 +47,10 @@ public class Recipe {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Image getRenderedImage() {
+        return new Image(new ByteArrayInputStream(getImage()));
     }
 
     public byte[] getImage() {

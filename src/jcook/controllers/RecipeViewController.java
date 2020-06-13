@@ -34,7 +34,7 @@ public class RecipeViewController {
 
         recipeNameLabel.setText(recipe.getName());
         ingredientList.setItems(FXCollections.observableList((List)recipe.getIngredients()));
-        recipeImage.setImage(new Image(new ByteArrayInputStream(recipe.getImage())));
+        recipeImage.setImage(recipe.getRenderedImage());
         recipeDescription.setText(recipe.getDescription());
     }
 
