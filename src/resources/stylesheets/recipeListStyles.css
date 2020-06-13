@@ -12,6 +12,19 @@ VBox {
 Label {
     -fx-alignment: center;
 }
-TableCell {
-    -fx-font-size: 20px;
+
+TableView TableRow {
+    -fx-font-size: 16px;
 }
+#filtersList {
+    -fx-font-size: 16px;
+}
+HBox {
+    -fx-alignment: center;
+}
+
+/*
+#ratingColumn TableCell {
+    -fx-font-size: 26px;
+}
+*/

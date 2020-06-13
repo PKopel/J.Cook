@@ -43,7 +43,6 @@ public class RecipeListController {
     @FXML
     TableColumn<Recipe, String> nameColumn;
 
-    // TODO: change to display stars
     @FXML
     TableColumn<Recipe, Void> ratingColumn;
     @FXML
@@ -54,7 +53,11 @@ public class RecipeListController {
     private final List<VBox> filterForms = new ArrayList<>();
 
     @FXML
-    ComboBox<Button> userButtons;
+    MenuButton userButtons;
+    @FXML
+    MenuItem openProfile;
+    @FXML
+    MenuItem logOut;
 
     @FXML
     Pane header;
@@ -126,8 +129,8 @@ public class RecipeListController {
 
         this.ratingColumn.setCellFactory(param -> {
             final ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/images/star.png")));
-            imageView.setFitHeight(fixedCellSize*4/5.0);
-            imageView.setFitWidth(fixedCellSize*4/5.0);
+            imageView.setFitHeight(fixedCellSize);
+            imageView.setFitWidth(fixedCellSize);
             return new TableCell<>() {
                 @Override
                 public void updateItem(Void item, boolean empty) {
@@ -193,14 +196,13 @@ public class RecipeListController {
             }
         });
 
-        // TODO: Fix it
-        List<Button> buttons = new ArrayList<>();
-        Button openProfileButton = new Button("Open profile");
-        Button logOutButton = new Button("Log out");
-        buttons.add(openProfileButton);
-        buttons.add(logOutButton);
-        ObservableList<Button> obsButtons = FXCollections.observableList(buttons);
-        userButtons.setItems(obsButtons);
+        // TODO: implement functionality
+        openProfile.setOnAction(e -> {
+            System.out.println("Opening profile");
+        });
+        logOut.setOnAction(e -> {
+            System.out.println("Logging out...");
+        });
     }
 
     private void initFilterAddingList() {
