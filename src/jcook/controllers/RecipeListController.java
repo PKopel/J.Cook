@@ -17,10 +17,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import jcook.filters.CategoryFilter;
-import jcook.filters.CombinedFilter;
-import jcook.filters.Filter;
-import jcook.filters.NameFilter;
+import jcook.filters.*;
 import jcook.models.Category;
 import jcook.models.Recipe;
 import jcook.providers.RecipeProvider;
@@ -219,6 +216,7 @@ public class RecipeListController {
         nameFilter.getChildren().addAll(new Label("name"), nameField, addNameFilterButton);
         filterForms.add(nameFilter);
 
+        /* Category filter */
         VBox categoryFilter = new VBox();
         categoryFilter.getStyleClass().add("filter");
         ComboBox<Category> categoryBox = new ComboBox<>();
@@ -231,6 +229,19 @@ public class RecipeListController {
         });
         nameFilter.getChildren().addAll(new Label("category"), categoryBox, addCategoryFilterButton);
         filterForms.add(categoryFilter);
+
+        /* Tag filter */
+        VBox tagFilter = new VBox();
+        tagFilter.getStyleClass().add("filter");
+        TextField tagField = new TextField();
+        Button addTagFilterButton = new Button("Add filter");
+        addTagFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
+            currentFilter.addFilter(new TagFilter(tagField.getText()));
+            recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
+            filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
+        });
+        nameFilter.getChildren().addAll(new Label("tag"), tagField, addTagFilterButton);
+        filterForms.add(tagFilter);
 
         filterAddingList.getChildren().addAll(filterForms);
     }
