@@ -121,7 +121,7 @@ public class RecipeListController {
             cell.setGraphic(imageView);
             return cell;
         });
-        this.iconColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
+        this.iconColumn.setCellValueFactory(new PropertyValueFactory<>("renderedImage"));
         this.nameColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
 
         this.ratingColumn.setCellFactory(param -> {
@@ -227,7 +227,8 @@ public class RecipeListController {
             recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
             filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         });
-        nameFilter.getChildren().addAll(new Label("category"), categoryBox, addCategoryFilterButton);
+        categoryFilter.getChildren().addAll(new Label("category"), categoryBox, addCategoryFilterButton);
+        categoryBox.setPrefWidth(filtersList.getPrefWidth());
         filterForms.add(categoryFilter);
 
         /* Tag filter */
@@ -240,7 +241,7 @@ public class RecipeListController {
             recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
             filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         });
-        nameFilter.getChildren().addAll(new Label("tag"), tagField, addTagFilterButton);
+        tagFilter.getChildren().addAll(new Label("tag"), tagField, addTagFilterButton);
         filterForms.add(tagFilter);
 
         filterAddingList.getChildren().addAll(filterForms);

@@ -3,8 +3,9 @@ listView {
     -fx-border-color: black;
     -fx-border-width: 1px;
 }
-#filterAddingList {
+#filterAddingList ListCell {
     -fx-padding: 5px;
+
 }
 VBox {
     -fx-text-alignment: center;
@@ -23,8 +24,10 @@ HBox {
     -fx-alignment: center;
 }
 
-/*
-#ratingColumn TableCell {
-    -fx-font-size: 26px;
+.filter {
+    -fx-background-color: grey;
+    -fx-padding: 5px;
+    -fx-border-radius: 10px;
+    -fx-border: solid 2px orange;
 }
-*/
+

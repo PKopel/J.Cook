@@ -35,9 +35,9 @@
             </VBox>
             <TableView fx:id="recipeTable" prefHeight="673.0" prefWidth="592.0" GridPane.columnIndex="1">
               <columns>
-                <TableColumn fx:id="iconColumn" prefWidth="84.0" text="Icon" />
-                <TableColumn fx:id="nameColumn" prefWidth="405.0" text="Name" />
-                  <TableColumn fx:id="ratingColumn" prefWidth="92.0" text="Average rating" />
+                <TableColumn fx:id="iconColumn" prefWidth="60.0" text="Icon" />
+                <TableColumn fx:id="nameColumn" prefWidth="430.0" text="Name" />
+                  <TableColumn fx:id="ratingColumn" prefWidth="90.0" text="Average rating" />
               </columns>
             </TableView>
             <VBox fx:id="filterAddingList" maxWidth="203.0" prefHeight="673.0" prefWidth="203.0" style="-fx-background-color: white;" />
