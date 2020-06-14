@@ -232,6 +232,7 @@ public class RecipeFormController {
                     tagList.stream().filter(Objects::nonNull).collect(Collectors.toList()),
                     categoryList.stream().filter(Objects::nonNull).collect(Collectors.toList())
             );
+            updated.setId(recipe.getId());
             RecipeProvider.getInstance().updateObject(recipe, updated);
             ((Stage) save.getScene().getWindow()).close();
         });
