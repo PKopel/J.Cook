@@ -42,10 +42,13 @@
             </VBox>
             <TableView fx:id="recipeTable" prefHeight="688.0" prefWidth="596.0" GridPane.columnIndex="1">
               <columns>
-                <TableColumn fx:id="iconColumn" prefWidth="60.0" resizable="false" text="Icon" />
-                <TableColumn fx:id="nameColumn" prefWidth="430.0" text="Name" />
-                  <TableColumn fx:id="ratingColumn" prefWidth="90.0" text="Average rating" />
+                <TableColumn fx:id="iconColumn" maxWidth="60.0" minWidth="0.0" prefWidth="60.0" resizable="false" text="Icon" />
+                <TableColumn fx:id="nameColumn" minWidth="-1.0" prefWidth="444.0" text="Name" />
+                  <TableColumn fx:id="ratingColumn" maxWidth="2805.0" minWidth="-1.0" prefWidth="92.0" text="Average rating" />
               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
             <VBox fx:id="filterAddingList" prefHeight="673.0" prefWidth="203.0" style="-fx-background-color: white;" />
          </children>

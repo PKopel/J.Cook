@@ -226,7 +226,7 @@ public class RecipeListController {
             filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         });
         categoryFilter.getChildren().addAll(new Label("category"), categoryBox, addCategoryFilterButton);
-        categoryBox.setPrefWidth(filtersList.getPrefWidth());
+        categoryBox.set
         filterForms.add(categoryFilter);
 
         /* Tag filter */
