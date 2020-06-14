@@ -1,6 +1,8 @@
 package jcook.models;
 
 import javafx.scene.image.Image;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.types.ObjectId;
 
 import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
@@ -8,7 +10,8 @@ import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.OptionalDouble;
 
-public class Recipe {
+public class Recipe implements Model{
+    private ObjectId id;
     private String name;
     private String description;
 
@@ -49,6 +52,7 @@ public class Recipe {
         this.name = name;
     }
 
+    @BsonIgnore
     public Image getRenderedImage() {
         return new Image(new ByteArrayInputStream(getImage()));
     }
@@ -68,6 +72,8 @@ public class Recipe {
     public void setIngredients(Collection<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
+
+    public void addIngredient(Ingredient ingredient){ ingredients.add(ingredient); }
 
     public Collection<Rating> getRatings() {
         return ratings;
@@ -89,6 +95,8 @@ public class Recipe {
         this.tags = tags;
     }
 
+    public void addTag(String tag){ tags.add(tag); }
+
     public Collection<Category> getCategories() {
         return categories;
     }
@@ -96,6 +104,8 @@ public class Recipe {
     public void setCategories(Collection<Category> categories) {
         this.categories = categories;
     }
+
+    public void addCategory(Category category){ categories.add(category); }
 
     public BigDecimal avgRating() {
         if(ratings == null || ratings.isEmpty()) return BigDecimal.valueOf(0.0).setScale(1, RoundingMode.HALF_UP);
@@ -109,5 +119,13 @@ public class Recipe {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 }

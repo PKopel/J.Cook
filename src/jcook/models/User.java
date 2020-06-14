@@ -1,44 +1,54 @@
 package jcook.models;
 
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
 import java.util.Collection;
 
-public class User {
+public class User implements Model{
+    private ObjectId id;
     private String name;
-    private Collection<ObjectId> recipes;
-    private Collection<ObjectId> ratings;
+    @BsonProperty("uploaded_recipes")
+    private Collection<ObjectId> uploadedRecipes;
+    @BsonProperty("rated_recipes")
+    private Collection<ObjectId> ratedRecipes;
 
     public User() {
     }
 
-    public User(String name, Collection<ObjectId> recipes, Collection<ObjectId> ratings) {
+    public User(String name, Collection<ObjectId> uploadedRecipes, Collection<ObjectId> ratedRecipes) {
         this.name = name;
-        this.recipes = recipes;
-        this.ratings = ratings;
+        this.uploadedRecipes = uploadedRecipes;
+        this.ratedRecipes = ratedRecipes;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public Collection<ObjectId> getRecipes() {
-        return recipes;
+    public Collection<ObjectId> getUploadedRecipes() {
+        return uploadedRecipes;
     }
 
-    public void setRecipes(Collection<ObjectId> recipes) {
-        this.recipes = recipes;
+    public void setUploadedRecipes(Collection<ObjectId> uploadedRecipes) {
+        this.uploadedRecipes = uploadedRecipes;
     }
 
-    public Collection<ObjectId> getRatings() {
-        return ratings;
+    public Collection<ObjectId> getRatedRecipes() {
+        return ratedRecipes;
     }
 
-    public void setRatings(Collection<ObjectId> ratings) {
-        this.ratings = ratings;
+    public void setRatedRecipes(Collection<ObjectId> ratedRecipes) {
+        this.ratedRecipes = ratedRecipes;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 }

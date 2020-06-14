@@ -12,6 +12,7 @@ public class RecipeProvider extends AbstractProvider<Recipe> {
 
     public static void initialize(String connectionName, String databaseName) {
         if (instance == null) instance = new RecipeProvider(connectionName, databaseName);
+        else System.out.println("RecipeProvider already initialized");
     }
 
     public static RecipeProvider getInstance() {

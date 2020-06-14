@@ -1,17 +1,21 @@
 package jcook.models;
 
+import org.bson.types.ObjectId;
+
 public class Rating {
     private double stars;
     private String description;
     private String date;
+    private ObjectId author;
 
     public Rating() {
     }
 
-    public Rating(int stars, String description, String date) {
+    public Rating(int stars, String description, String date, ObjectId author) {
         this.stars = stars;
         this.description = description;
         this.date = date;
+        this.author = author;
     }
 
     public String getDate() {
@@ -36,5 +40,14 @@ public class Rating {
 
     public void setStars(double stars) {
         this.stars = stars;
+    }
+
+    public ObjectId getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(ObjectId
+                                  author) {
+        this.author = author;
     }
 }
