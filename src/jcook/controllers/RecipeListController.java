@@ -64,7 +64,6 @@ public class RecipeListController {
     Button recipeListButton;
     @FXML
     GridPane recipeListContentPane;
-    private StackPane mainPane;
 
     // TODO: Would be nice to have returned types as Observables
 
@@ -247,7 +246,4 @@ public class RecipeListController {
         filterAddingList.getChildren().addAll(filterForms);
     }
 
-    public void setMainPane(StackPane mainPane) {
-        this.mainPane = mainPane;
-    }
 }
