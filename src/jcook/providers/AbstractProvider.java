@@ -56,7 +56,7 @@ public abstract class AbstractProvider<T extends Model> {
     }
 
     /* for updating simple fields */
-    public void updateObject(T object, String propertyName){
+    public void updateObject(T oldObject,T newObject){
         BasicDBObject query = new BasicDBObject();
         query.put("_id", object.getId());
         try {

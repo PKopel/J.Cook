@@ -3,6 +3,7 @@ package jcook.controllers;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
@@ -20,9 +21,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static javafx.scene.layout.GridPane.getRowIndex;
 
@@ -63,8 +65,8 @@ public class RecipeFormController {
     }
 
     private int getCategoryIndex(int d) {
-        categoryIndex+=d;
-        return categoryIndex-d;
+        categoryIndex += d;
+        return categoryIndex - d;
     }
 
     private BiConsumer<GridPane, Button> nextIngredient(int index) {
@@ -97,8 +99,8 @@ public class RecipeFormController {
     }
 
     private int getIngredientIndex(int d) {
-        ingredientIndex+=d;
-        return ingredientIndex-d;
+        ingredientIndex += d;
+        return ingredientIndex - d;
     }
 
     private BiConsumer<GridPane, Button> nextTag(int index) {
@@ -115,11 +117,10 @@ public class RecipeFormController {
     }
 
     private int getTagIndex(int d) {
-        tagIndex+=d;
-        return tagIndex-d;
+        tagIndex += d;
+        return tagIndex - d;
     }
 
-    @SuppressWarnings("SuspiciousMethodCalls")
     private <T> void insertRow(GridPane grid, List<T> values, Function<Integer, Integer> index,
                                Function<Integer, BiConsumer<GridPane, Button>> nextRow) {
         int rowIndex = index.apply(1);
@@ -144,10 +145,9 @@ public class RecipeFormController {
                         GridPane.setRowIndex(node, row - 1);
                     }
                 });
-                values.remove(getRowIndex(add));
+                values.remove((int) getRowIndex(add));
             });
         });
-
         values.add(rowIndex, null);
         nextRow.apply(rowIndex).accept(grid, add);
     }
@@ -180,9 +180,9 @@ public class RecipeFormController {
                     name.getText(),
                     description.getText(),
                     imageBytes,
-                    ingredientList,
-                    tagList,
-                    categoryList
+                    ingredientList.stream().filter(Objects::nonNull).collect(Collectors.toList()),
+                    tagList.stream().filter(Objects::nonNull).collect(Collectors.toList()),
+                    categoryList.stream().filter(Objects::nonNull).collect(Collectors.toList())
             ));
             ((Stage) save.getScene().getWindow()).close();
         });
@@ -191,9 +191,49 @@ public class RecipeFormController {
     public void setRecipe(Recipe recipe) {
         name.textProperty().setValue(recipe.getName());
         description.textProperty().setValue(recipe.getDescription());
-        recipe.getCategories().forEach(category -> {
 
-            insertRow(categoryPane, categoryList, this::getCategoryIndex, this::nextCategory);
+        recipe.getCategories().forEach(category -> {
+            List<Node> children = categoryPane.getChildren();
+            Node box = children.get((categoryIndex-1) * 2);
+            if (box instanceof ComboBox<?>)
+                ((ComboBox<Category>) box).getSelectionModel().select(category);
+            Node button = children.get((categoryIndex-1) * 2+1);
+            if (button instanceof Button) ((Button)button).fire();
+        });
+        recipe.getIngredients().forEach(ingredient -> {
+            List<Node> children = ingredientPane.getChildren();
+            Node ingName = children.get((ingredientIndex-1) * 4);
+            Node ingQty = children.get((ingredientIndex-1) * 4 + 1);
+            Node ingUnit = children.get((ingredientIndex-1) * 4 + 2);
+            if (ingName instanceof TextField)
+                ((TextField) ingName).textProperty().setValue(ingredient.getName());
+            if (ingQty instanceof TextField)
+                ((TextField) ingQty).textProperty().setValue(((Double) ingredient.getQuantity()).toString());
+            if (ingUnit instanceof TextField)
+                ((TextField) ingUnit).textProperty().setValue(ingredient.getUnit());
+            Node button = children.get((ingredientIndex-1) * 4+3);
+            if (button instanceof Button) ((Button)button).fire();
+        });
+        recipe.getTags().forEach(tag -> {
+            List<Node> children = tagPane.getChildren();
+            Node node = children.get((tagIndex-1) * 2+1);
+            if (node instanceof TextField)
+                ((TextField) node).textProperty().setValue(tag);
+            Node button = children.get((tagIndex-1)* 2);
+            if (button instanceof Button) ((Button)button).fire();
+        });
+        save.textProperty().setValue("Update");
+        save.setOnAction(event -> {
+            Recipe updated = new Recipe(
+                    name.getText(),
+                    description.getText(),
+                    imageBytes,
+                    ingredientList.stream().filter(Objects::nonNull).collect(Collectors.toList()),
+                    tagList.stream().filter(Objects::nonNull).collect(Collectors.toList()),
+                    categoryList.stream().filter(Objects::nonNull).collect(Collectors.toList())
+            );
+            RecipeProvider.getInstance().updateObject(recipe, updated);
+            ((Stage) save.getScene().getWindow()).close();
         });
     }
 }
