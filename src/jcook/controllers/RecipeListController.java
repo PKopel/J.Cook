@@ -146,12 +146,8 @@ public class RecipeListController {
         filtersList.setFixedCellSize(fixedFilterCellSize);
         filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         filtersList.setCellFactory(param -> {
-            final HBox hbox = new HBox();
-            hbox.setPrefWidth(filtersList.getPrefWidth());
             final Button removeFilterButton = new Button("X");
             final Label label = new Label("Empty");
-            label.setPrefWidth(filtersList.getWidth()-removeFilterButton.getWidth());
-            label.setTextAlignment(TextAlignment.LEFT);
             final Filter[] f = new Filter[1];
 
             removeFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
@@ -160,7 +156,10 @@ public class RecipeListController {
                 recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
             });
 
-            hbox.getChildren().addAll(label, removeFilterButton);
+            BorderPane.setAlignment(label, Pos.CENTER_LEFT);
+            BorderPane.setAlignment(removeFilterButton, Pos.CENTER_RIGHT);
+            final BorderPane borderPane = new BorderPane(null, null, removeFilterButton, null, label);
+
             return new ListCell<>() {
                 @Override
                 public void updateItem(Filter filter, boolean empty) {
@@ -170,7 +169,7 @@ public class RecipeListController {
                     } else {
                         label.setText(filter.toString());
                         f[0] = filter;
-                        setGraphic(hbox);
+                        setGraphic(borderPane);
                     }
                 }
             };

@@ -20,12 +20,14 @@ TableView TableRow {
 #filtersList {
     -fx-font-size: 16px;
 }
+#filtersList Button {
+    -fx-alignment: center-right;
+}
 HBox {
     -fx-alignment: center;
 }
 
 .filter {
-    -fx-background-color: grey;
     -fx-padding: 5px;
     -fx-border-radius: 10px;
     -fx-border: solid 2px orange;
