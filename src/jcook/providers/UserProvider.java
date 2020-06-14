@@ -11,6 +11,7 @@ public class UserProvider extends AbstractProvider<User> {
 
     public static void initialize(String connectionName, String databaseName) {
         if (instance == null) instance = new UserProvider(connectionName, databaseName);
+        else System.out.println("UserProvider already initialized");
     }
 
     public static UserProvider getInstance() {

@@ -1,6 +1,7 @@
 package jcook.models;
 
 import javafx.scene.image.Image;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 
 import java.io.ByteArrayInputStream;
@@ -51,6 +52,7 @@ public class Recipe implements Model{
         this.name = name;
     }
 
+    @BsonIgnore
     public Image getRenderedImage() {
         return new Image(new ByteArrayInputStream(getImage()));
     }
@@ -70,6 +72,8 @@ public class Recipe implements Model{
     public void setIngredients(Collection<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
+
+    public void addIngredient(Ingredient ingredient){ ingredients.add(ingredient); }
 
     public Collection<Rating> getRatings() {
         return ratings;
@@ -91,6 +95,8 @@ public class Recipe implements Model{
         this.tags = tags;
     }
 
+    public void addTag(String tag){ tags.add(tag); }
+
     public Collection<Category> getCategories() {
         return categories;
     }
@@ -98,6 +104,8 @@ public class Recipe implements Model{
     public void setCategories(Collection<Category> categories) {
         this.categories = categories;
     }
+
+    public void addCategory(Category category){ categories.add(category); }
 
     public BigDecimal avgRating() {
         if(ratings == null || ratings.isEmpty()) return BigDecimal.valueOf(0.0).setScale(1, RoundingMode.HALF_UP);

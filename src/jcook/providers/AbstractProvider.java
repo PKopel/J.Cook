@@ -9,7 +9,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 import jcook.filters.Filter;
+import jcook.filters.NameFilter;
+import jcook.models.Category;
+import jcook.models.Ingredient;
 import jcook.models.Model;
+import jcook.models.Recipe;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
@@ -51,13 +55,14 @@ public abstract class AbstractProvider<T extends Model> {
                 .insertOne(object);
     }
 
+    /* for updating simple fields */
     public void updateObject(T object, String propertyName){
         BasicDBObject query = new BasicDBObject();
         query.put("_id", object.getId());
         try {
             Field property = clazz.getDeclaredField(propertyName);
             property.setAccessible(true);
-            db.getCollection(collectionName, clazz)
+            db.getCollection(collectionName)
                     .updateOne(
                             query,Updates.set(
                                     propertyName,
@@ -70,17 +75,18 @@ public abstract class AbstractProvider<T extends Model> {
         }
     }
 
+    /* for updating arrays */
     public <V> void updateObject(T object, V newElement, String arrayName){
         BasicDBObject query = new BasicDBObject();
         try {
             query.put("_id", object.getId());
-            db.getCollection(collectionName, clazz).updateOne(query,Updates.push(arrayName, newElement));
+            db.getCollection(collectionName).updateOne(query,Updates.push(arrayName, newElement));
         } catch (Exception e) {
-            System.out.println("illegal property update attempt");
+            System.out.println(e.getMessage());
         }
     }
 
     public void deleteObjects(Filter filter){
-        db.getCollection(collectionName, clazz).deleteMany(filter.getQuery());
+        db.getCollection(collectionName).deleteMany(filter.getQuery());
     }
 }
