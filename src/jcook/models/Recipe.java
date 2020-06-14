@@ -1,6 +1,7 @@
 package jcook.models;
 
 import javafx.scene.image.Image;
+import org.bson.types.ObjectId;
 
 import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
@@ -8,7 +9,8 @@ import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.OptionalDouble;
 
-public class Recipe {
+public class Recipe implements Model{
+    private ObjectId id;
     private String name;
     private String description;
 
@@ -109,5 +111,13 @@ public class Recipe {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 }

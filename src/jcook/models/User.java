@@ -5,7 +5,8 @@ import org.bson.types.ObjectId;
 
 import java.util.Collection;
 
-public class User {
+public class User implements Model{
+    private ObjectId id;
     private String name;
     @BsonProperty("uploaded_recipes")
     private Collection<ObjectId> uploadedRecipes;
@@ -21,9 +22,7 @@ public class User {
         this.ratedRecipes = ratedRecipes;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public void setName(String name) {
         this.name = name;
@@ -43,5 +42,13 @@ public class User {
 
     public void setRatedRecipes(Collection<ObjectId> ratedRecipes) {
         this.ratedRecipes = ratedRecipes;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 }
