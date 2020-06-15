@@ -7,6 +7,7 @@ import jcook.filters.PasswordFilter;
 import jcook.models.User;
 import jcook.providers.UserProvider;
 
+import java.io.IOException;
 import java.util.List;
 
 public class LoginManager {
@@ -48,9 +49,9 @@ public class LoginManager {
         }
     }
 
-    public static User getLoggedUser() {
+    public static User getLoggedUser() throws IOException {
         if(offline) {
-            return new User("Offline", null, null, "Offline");
+            return User.offlineUser();
         } else {
             return currentUser;
         }

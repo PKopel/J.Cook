@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,6 +19,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import jcook.filters.*;
+import jcook.loginManager.LoginManager;
 import jcook.models.Category;
 import jcook.models.Recipe;
 import jcook.providers.RecipeProvider;
@@ -50,14 +52,14 @@ public class RecipeListController {
     private final List<VBox> filterForms = new ArrayList<>();
 
     @FXML
+    ImageView userImage;
+    @FXML
     MenuButton userButtons;
     @FXML
     MenuItem openProfile;
     @FXML
     MenuItem logOut;
 
-    @FXML
-    Pane header;
     @FXML
     Button recipeFormButton;
     @FXML
@@ -68,7 +70,7 @@ public class RecipeListController {
     // TODO: Would be nice to have returned types as Observables
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         currentFilter.addFilter(new NameFilter(""));
 
         initRecipeTable();
@@ -181,7 +183,7 @@ public class RecipeListController {
         });
     }
 
-    private void initHeader() {
+    private void initHeader() throws IOException {
         recipeFormButton.addEventHandler(ActionEvent.ACTION, e -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RecipeForm.fxml"));
@@ -196,12 +198,28 @@ public class RecipeListController {
             }
         });
 
+        userImage.setImage(LoginManager.getLoggedUser().getRenderedImage());
+        userButtons.setText(LoginManager.getLoggedUser().getName());
         // TODO: implement functionality
         openProfile.setOnAction(e -> {
             System.out.println("Opening profile");
         });
         logOut.setOnAction(e -> {
-            System.out.println("Logging out...");
+            // TODO: Close all recipe windows
+            LoginManager.logOut();
+            ((Stage) recipeListContentPane.getScene().getWindow()).close();
+
+
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPane.fxml"));
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root, 1024, 768));
+                stage.setTitle("J.Cook");
+                stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/j_cook.jpeg")));
+                stage.show();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         });
     }
 

@@ -1,18 +1,14 @@
 package jcook.controllers;
 
-import javafx.beans.NamedArg;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.TextFlow;
 import jcook.models.Ingredient;
 import jcook.models.Recipe;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 
 public class RecipeViewController {

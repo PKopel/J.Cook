@@ -61,7 +61,7 @@
          <children>
             <HBox GridPane.columnIndex="1">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="userImage" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/j_cook.jpeg" />
                      </image>
