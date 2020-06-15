@@ -31,4 +31,25 @@ HBox {
     -fx-padding: 5px;
     -fx-border-radius: 10px;
     -fx-border: solid 2px orange;
+    -fx-font-size: 13px;
+    -fx-alignment: center;
+    -fx-spacing: 5px;
+}
+.filter Label {
+    -fx-alignment: center;
+    -fx-font-size: 13px;
+}
+.filter Button {
+    -fx-font-size: 13px;
+}
+
+#recipeFormButton, #userBox {
+    -fx-alignment: center;
+}
+#headerButtons {
+    -fx-alignment: center-left;
+    -fx-padding: 5px;
+}
+#currentFiltersLabel {
+    -fx-background-color: #d9d9d9;
 }

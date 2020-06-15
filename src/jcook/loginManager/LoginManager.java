@@ -49,6 +49,10 @@ public class LoginManager {
         }
     }
 
+    public static boolean offlineSession() {
+        return offline;
+    }
+
     public static User getLoggedUser() throws IOException {
         if(offline) {
             return User.offlineUser();

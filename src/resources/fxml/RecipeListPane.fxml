@@ -36,7 +36,7 @@
          <children>
             <VBox GridPane.columnIndex="2">
                <children>
-                  <Label prefHeight="26.0" prefWidth="218.0" style="-fx-text-alignment: center;" text="Current filters" />
+                  <Label fx:id="currentFiltersLabel" prefHeight="25.0" prefWidth="223.0" style="-fx-text-alignment: center;" text="Current filters" />
                   <ListView fx:id="filtersList" prefHeight="667.0" prefWidth="223.0" />
                </children>
             </VBox>
@@ -59,7 +59,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <HBox GridPane.columnIndex="1">
+            <HBox fx:id="userBox" GridPane.columnIndex="1">
                <children>
                   <ImageView fx:id="userImage" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -74,10 +74,9 @@
                   </MenuButton>
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="headerButtons" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button fx:id="recipeFormButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="174.0" text="Add recipes" />
-                  <Button fx:id="recipeListButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="174.0" text="Explore recipes" />
                </children>
             </HBox>
          </children>

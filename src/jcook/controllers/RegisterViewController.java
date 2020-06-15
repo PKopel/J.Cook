@@ -12,7 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import jcook.filters.NameFilter;
@@ -23,15 +22,13 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.LinkedList;
 
 public class RegisterViewController {
     private final int minLength = 5;
     private final int maxLength = 20;
 
-    private final int closeWindowDelay = 8;
+    private final int closeWindowDelay = 5;
 
     private final String usernameWrong = "Username has to be at least " + minLength + " character and at most " + maxLength + " character long and not contain any special characters";
     private final String usernameTaken = "This username is already in use";

@@ -184,6 +184,10 @@ public class RecipeListController {
     }
 
     private void initHeader() throws IOException {
+        if(LoginManager.offlineSession()) {
+            recipeFormButton.setVisible(false);
+        }
+
         recipeFormButton.addEventHandler(ActionEvent.ACTION, e -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RecipeForm.fxml"));
@@ -234,7 +238,7 @@ public class RecipeListController {
             recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
             filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         });
-        nameFilter.getChildren().addAll(new Label("name"), nameField, addNameFilterButton);
+        nameFilter.getChildren().addAll(new Label("Name"), nameField, addNameFilterButton);
         filterForms.add(nameFilter);
 
         /* Category filter */
@@ -248,7 +252,7 @@ public class RecipeListController {
             recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
             filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         });
-        categoryFilter.getChildren().addAll(new Label("category"), categoryBox, addCategoryFilterButton);
+        categoryFilter.getChildren().addAll(new Label("Category"), categoryBox, addCategoryFilterButton);
         categoryBox.setMaxWidth(5000.0);
         filterForms.add(categoryFilter);
 
@@ -262,8 +266,14 @@ public class RecipeListController {
             recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
             filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
         });
-        tagFilter.getChildren().addAll(new Label("tag"), tagField, addTagFilterButton);
+        tagFilter.getChildren().addAll(new Label("Tag"), tagField, addTagFilterButton);
         filterForms.add(tagFilter);
+
+        /* Minimal rating filter */
+        /*VBox minRatingFilter = new VBox();
+        minRatingFilter.getStyleClass().add("filter");*/
+
+        /* Maximal rating filter */
 
         filterAddingList.getChildren().addAll(filterForms);
     }
