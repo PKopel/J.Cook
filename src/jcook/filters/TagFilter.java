@@ -17,6 +17,6 @@ public class TagFilter implements Filter {
 
     @Override
     public String toString() {
-        return "Tag("+tag+")";
+        return "Tag(" + tag + ")";
     }
 }

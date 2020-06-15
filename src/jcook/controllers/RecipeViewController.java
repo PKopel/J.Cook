@@ -1,7 +1,6 @@
 package jcook.controllers;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -17,14 +16,10 @@ import jcook.models.Rating;
 import jcook.models.Recipe;
 import jcook.models.User;
 import jcook.providers.UserProvider;
-
-
-import java.util.Collection;
 import java.util.List;
 
-public class RecipeViewController {
-    private Recipe recipe;
 
+public class RecipeViewController {
     @FXML
     Label recipeNameLabel;
     @FXML
@@ -48,14 +43,14 @@ public class RecipeViewController {
     ListView<Rating> commentList;
 
 
-    public RecipeViewController() { }
+    public RecipeViewController() {
+    }
 
     public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-
         recipeNameLabel.setText(recipe.getName());
-        ingredientList.setItems(FXCollections.observableList((List)recipe.getIngredients()));
-        recipeImage.setImage(recipe.getRenderedImage());
+        ingredientList.setItems(FXCollections.observableList(recipe.getIngredients()));
+        if (recipe.getRenderedImage() != null)
+            recipeImage.setImage(recipe.getRenderedImage());
         recipeDescription.setText(recipe.getDescription());
         commentList.setItems(FXCollections.observableList((List)recipe.getRatings()));
     }
@@ -70,10 +65,10 @@ public class RecipeViewController {
         ingredientList.setCellFactory(param -> new ListCell<>() {
             @Override
             public void updateItem(Ingredient ingredient, boolean empty) {
-                if(empty) {
+                if (empty) {
                     setText(null);
                 } else {
-                    setText(ingredient.getQuantity()+" "+ingredient.getUnit()+" "+ingredient.getName());
+                    setText(ingredient.getQuantity() + " " + ingredient.getUnit() + " " + ingredient.getName());
                 }
             }
         });

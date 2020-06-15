@@ -31,17 +31,15 @@ public class LoginController {
     @FXML
     StackPane mainPane;
 
-    public LoginController() { }
-
     @FXML
     public void initialize() {
         loginButton.addEventHandler(ActionEvent.ACTION, e -> {
-            if(LoginManager.logIn(loginField.getText(), passwordField.getText())) {
+            if (LoginManager.getInstance().logIn(loginField.getText(), passwordField.getText())) {
                 openApp();
             }
         });
         joinOfflineButton.addEventHandler(ActionEvent.ACTION, e -> {
-            if(LoginManager.joinOffline()) {
+            if (LoginManager.getInstance().joinOffline()) {
                 openApp();
             }
         });

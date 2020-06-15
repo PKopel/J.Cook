@@ -15,7 +15,9 @@ public class IdFilter implements Filter {
         this.ids.addAll(ids);
     }
 
-    public IdFilter(ObjectId id) { this.ids.add(id); }
+    public IdFilter(ObjectId id) {
+        this.ids.add(id);
+    }
 
     @Override
     public Bson getQuery() {
@@ -26,6 +28,6 @@ public class IdFilter implements Filter {
 
     @Override
     public String toString() {
-        return "Id("+ids+")";
+        return "Id(" + ids + ")";
     }
 }

@@ -7,19 +7,19 @@ import org.bson.types.ObjectId;
 import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Collection;
+import java.util.List;
 import java.util.OptionalDouble;
 
-public class Recipe implements Model{
+public class Recipe implements Model {
     private ObjectId id;
     private String name;
     private String description;
 
     private byte[] image;
-    private Collection<Ingredient> ingredients;
-    private Collection<Rating> ratings;
-    private Collection<String> tags;
-    private Collection<Category> categories;
+    private List<Ingredient> ingredients;
+    private List<Rating> ratings;
+    private List<String> tags;
+    private List<Category> categories;
 
     public Recipe() {
     }
@@ -28,9 +28,9 @@ public class Recipe implements Model{
             String name,
             String description,
             byte[] image,
-            Collection<Ingredient> ingredients,
-            Collection<String> tags,
-            Collection<Category> categories) {
+            List<Ingredient> ingredients,
+            List<String> tags,
+            List<Category> categories) {
         this.name = name;
         this.description = description;
         this.image = image;
@@ -54,7 +54,11 @@ public class Recipe implements Model{
 
     @BsonIgnore
     public Image getRenderedImage() {
-        return new Image(new ByteArrayInputStream(getImage()));
+        if (image != null) {
+            return new Image(new ByteArrayInputStream(image));
+        } else {
+            return null;
+        }
     }
 
     public byte[] getImage() {
@@ -65,50 +69,56 @@ public class Recipe implements Model{
         this.image = image;
     }
 
-    public Collection<Ingredient> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Collection<Ingredient> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public void addIngredient(Ingredient ingredient){ ingredients.add(ingredient); }
+    public void addIngredient(Ingredient ingredient) {
+        ingredients.add(ingredient);
+    }
 
-    public Collection<Rating> getRatings() {
+    public List<Rating> getRatings() {
         return ratings;
     }
 
-    public void setRatings(Collection<Rating> ratings) {
+    public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
     }
 
-    public void addRating(Rating rating){
+    public void addRating(Rating rating) {
         ratings.add(rating);
     }
 
-    public Collection<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(Collection<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
-    public void addTag(String tag){ tags.add(tag); }
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
 
-    public Collection<Category> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(Collection<Category> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
-    public void addCategory(Category category){ categories.add(category); }
+    public void addCategory(Category category) {
+        categories.add(category);
+    }
 
     public BigDecimal avgRating() {
-        if(ratings == null || ratings.isEmpty()) return BigDecimal.valueOf(0.0).setScale(1, RoundingMode.HALF_UP);
+        if (ratings == null || ratings.isEmpty()) return BigDecimal.valueOf(0.0).setScale(1, RoundingMode.HALF_UP);
         OptionalDouble sum = ratings.stream().mapToDouble(Rating::getStars).average();
         return BigDecimal.valueOf(sum.isPresent() ? sum.getAsDouble() : 0.0).setScale(1, RoundingMode.HALF_UP);
     }
