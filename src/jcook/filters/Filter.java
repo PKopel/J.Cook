@@ -3,7 +3,7 @@ package jcook.filters;
 import org.bson.conversions.Bson;
 
 public interface Filter {
-    default Bson getQuery(){
+    default Bson getQuery() {
         return null;
     }
 }

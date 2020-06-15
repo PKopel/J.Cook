@@ -11,20 +11,19 @@ import jcook.providers.UserProvider;
 
 public class Main extends Application {
 
+    public static void main(String[] args) {
+        RecipeProvider.initialize("mongodb://127.0.0.1", "JCookTest");
+        UserProvider.initialize("mongodb://127.0.0.1", "JCookTest");
+        launch(args);
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginPane.fxml"));
 
         primaryStage.setScene(new Scene(root, 1024, 768));
         primaryStage.setTitle("J.Cook");
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/j_cook.jpeg")));
         primaryStage.show();
-    }
-
-
-    public static void main(String[] args) {
-        RecipeProvider.initialize("mongodb://127.0.0.1","JCookTest");
-        UserProvider.initialize("mongodb://127.0.0.1","JCookTest");
-        launch(args);
     }
 }

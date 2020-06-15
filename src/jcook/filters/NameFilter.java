@@ -17,6 +17,6 @@ public class NameFilter implements Filter {
 
     @Override
     public String toString() {
-        return "Name("+name+")";
+        return "Name(" + name + ")";
     }
 }

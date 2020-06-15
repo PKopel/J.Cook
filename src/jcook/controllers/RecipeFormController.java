@@ -29,27 +29,27 @@ import java.util.stream.Collectors;
 import static javafx.scene.layout.GridPane.getRowIndex;
 
 public class RecipeFormController {
+    private final List<Category> categoryList = new LinkedList<>();
+    private final List<Ingredient> ingredientList = new LinkedList<>();
+    private final List<String> tagList = new LinkedList<>();
     @FXML
     GridPane categoryPane;
-    private final List<Category> categoryList = new LinkedList<>();
-    private int categoryIndex = 0;
     @FXML
     GridPane ingredientPane;
-    private final List<Ingredient> ingredientList = new LinkedList<>();
-    private int ingredientIndex = 0;
     @FXML
     GridPane tagPane;
-    private final List<String> tagList = new LinkedList<>();
-    private int tagIndex = 0;
     @FXML
     Button save;
     @FXML
     Button image;
-    private byte[] imageBytes;
     @FXML
     TextField name;
     @FXML
     TextArea description;
+    private int categoryIndex = 0;
+    private int ingredientIndex = 0;
+    private int tagIndex = 0;
+    private byte[] imageBytes;
 
     private BiConsumer<GridPane, Button> nextCategory(int index) {
         return (grid, add) -> {
@@ -167,7 +167,7 @@ public class RecipeFormController {
                         imageBytes = new byte[(int) file.length()];
                         try {
                             FileInputStream input = new FileInputStream(file);
-                            input.read(imageBytes);
+                            int numberRead = input.read(imageBytes);
                             input.close();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -188,39 +188,40 @@ public class RecipeFormController {
         });
     }
 
+    @SuppressWarnings("unchecked")
     public void setRecipe(Recipe recipe) {
         name.textProperty().setValue(recipe.getName());
         description.textProperty().setValue(recipe.getDescription());
 
         recipe.getCategories().forEach(category -> {
             List<Node> children = categoryPane.getChildren();
-            Node box = children.get((categoryIndex-1) * 2);
+            Node box = children.get((categoryIndex - 1) * 2);
             if (box instanceof ComboBox<?>)
                 ((ComboBox<Category>) box).getSelectionModel().select(category);
-            Node button = children.get((categoryIndex-1) * 2+1);
-            if (button instanceof Button) ((Button)button).fire();
+            Node button = children.get((categoryIndex - 1) * 2 + 1);
+            if (button instanceof Button) ((Button) button).fire();
         });
         recipe.getIngredients().forEach(ingredient -> {
             List<Node> children = ingredientPane.getChildren();
-            Node ingName = children.get((ingredientIndex-1) * 4);
-            Node ingQty = children.get((ingredientIndex-1) * 4 + 1);
-            Node ingUnit = children.get((ingredientIndex-1) * 4 + 2);
+            Node ingName = children.get((ingredientIndex - 1) * 4);
+            Node ingQty = children.get((ingredientIndex - 1) * 4 + 1);
+            Node ingUnit = children.get((ingredientIndex - 1) * 4 + 2);
             if (ingName instanceof TextField)
                 ((TextField) ingName).textProperty().setValue(ingredient.getName());
             if (ingQty instanceof TextField)
                 ((TextField) ingQty).textProperty().setValue(((Double) ingredient.getQuantity()).toString());
             if (ingUnit instanceof TextField)
                 ((TextField) ingUnit).textProperty().setValue(ingredient.getUnit());
-            Node button = children.get((ingredientIndex-1) * 4+3);
-            if (button instanceof Button) ((Button)button).fire();
+            Node button = children.get((ingredientIndex - 1) * 4 + 3);
+            if (button instanceof Button) ((Button) button).fire();
         });
         recipe.getTags().forEach(tag -> {
             List<Node> children = tagPane.getChildren();
-            Node node = children.get((tagIndex-1) * 2+1);
+            Node node = children.get((tagIndex - 1) * 2 + 1);
             if (node instanceof TextField)
                 ((TextField) node).textProperty().setValue(tag);
-            Node button = children.get((tagIndex-1)* 2);
-            if (button instanceof Button) ((Button)button).fire();
+            Node button = children.get((tagIndex - 1) * 2);
+            if (button instanceof Button) ((Button) button).fire();
         });
         save.textProperty().setValue("Update");
         save.setOnAction(event -> {

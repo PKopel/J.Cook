@@ -17,6 +17,6 @@ public class PasswordFilter implements Filter {
 
     @Override
     public String toString() {
-        return "Password("+password+")";
+        return "Password(" + password + ")";
     }
 }

@@ -3,7 +3,6 @@ package jcook.controllers;
 import com.mongodb.client.model.Filters;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,8 +13,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import jcook.filters.*;
@@ -34,23 +34,19 @@ public class RecipeListController {
     private final RecipeProvider recipeProvider = RecipeProvider.getInstance();
     private final int fixedCellSize = 50;
     private final int fixedFilterCellSize = 30;
-
+    private final List<VBox> filterForms = new ArrayList<>();
     @FXML
     TableView<Recipe> recipeTable;
     @FXML
     TableColumn<Recipe, Image> iconColumn;
     @FXML
     TableColumn<Recipe, String> nameColumn;
-
     @FXML
     TableColumn<Recipe, Void> ratingColumn;
     @FXML
     ListView<Filter> filtersList;
     @FXML
     VBox filterAddingList;
-
-    private final List<VBox> filterForms = new ArrayList<>();
-
     @FXML
     ImageView userImage;
     @FXML
@@ -84,10 +80,10 @@ public class RecipeListController {
         this.recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
 
         // On-click handler
-        this.recipeTable.setRowFactory( param -> {
+        this.recipeTable.setRowFactory(param -> {
             TableRow<Recipe> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if(!row.isEmpty() && event.getClickCount() == 2) {
+                if (!row.isEmpty() && event.getClickCount() == 2) {
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RecipeView.fxml"));
                         GridPane recipeViewPane = loader.load();
@@ -136,12 +132,12 @@ public class RecipeListController {
                         setText(null);
                         setGraphic(null);
                     } else {
-                        if(getTableRow().getItem() != null)
-                        setText(
-                                getTableRow()
-                                        .getItem()
-                                        .avgRating()
-                                        .toString());
+                        if (getTableRow().getItem() != null)
+                            setText(
+                                    getTableRow()
+                                            .getItem()
+                                            .avgRating()
+                                            .toString());
                         setGraphic(imageView);
                     }
                 }
@@ -184,7 +180,7 @@ public class RecipeListController {
     }
 
     private void initHeader() throws IOException {
-        if(LoginManager.offlineSession()) {
+        if (LoginManager.getInstance().offlineSession()) {
             recipeFormButton.setVisible(false);
         }
 
@@ -202,15 +198,13 @@ public class RecipeListController {
             }
         });
 
-        userImage.setImage(LoginManager.getLoggedUser().getRenderedImage());
-        userButtons.setText(LoginManager.getLoggedUser().getName());
+        userImage.setImage(LoginManager.getInstance().getLoggedUser().getRenderedImage());
+        userButtons.setText(LoginManager.getInstance().getLoggedUser().getName());
         // TODO: implement functionality
-        openProfile.setOnAction(e -> {
-            System.out.println("Opening profile");
-        });
+        openProfile.setOnAction(e -> System.out.println("Opening profile"));
         logOut.setOnAction(e -> {
             // TODO: Close all recipe windows
-            LoginManager.logOut();
+            LoginManager.getInstance().logOut();
             ((Stage) recipeListContentPane.getScene().getWindow()).close();
 
 

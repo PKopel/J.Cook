@@ -9,11 +9,7 @@ import javafx.scene.image.ImageView;
 import jcook.models.Ingredient;
 import jcook.models.Recipe;
 
-import java.util.List;
-
 public class RecipeViewController {
-    private Recipe recipe;
-
     @FXML
     Label recipeNameLabel;
     @FXML
@@ -22,14 +18,16 @@ public class RecipeViewController {
     ImageView recipeImage;
     @FXML
     Label recipeDescription;
+    private Recipe recipe;
 
-    public RecipeViewController() { }
+    public RecipeViewController() {
+    }
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
 
         recipeNameLabel.setText(recipe.getName());
-        ingredientList.setItems(FXCollections.observableList((List)recipe.getIngredients()));
+        ingredientList.setItems(FXCollections.observableList(recipe.getIngredients()));
         recipeImage.setImage(recipe.getRenderedImage());
         recipeDescription.setText(recipe.getDescription());
     }
@@ -38,10 +36,10 @@ public class RecipeViewController {
         ingredientList.setCellFactory(param -> new ListCell<>() {
             @Override
             public void updateItem(Ingredient ingredient, boolean empty) {
-                if(empty) {
+                if (empty) {
                     setText(null);
                 } else {
-                    setText(ingredient.getQuantity()+" "+ingredient.getUnit()+" "+ingredient.getName());
+                    setText(ingredient.getQuantity() + " " + ingredient.getUnit() + " " + ingredient.getName());
                 }
             }
         });

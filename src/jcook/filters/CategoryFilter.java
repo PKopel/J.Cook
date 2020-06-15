@@ -18,6 +18,6 @@ public class CategoryFilter implements Filter {
 
     @Override
     public String toString() {
-        return "Category("+category+")";
+        return "Category(" + category + ")";
     }
 }
