@@ -24,7 +24,7 @@ public class RegisterViewController {
 
     private final int closeWindowDelay = 8;
 
-    private final String usernameWrong = "Username has to be at least " + minLength + " character and at most " + maxLength + " character long";
+    private final String usernameWrong = "Username has to be at least " + minLength + " character and at most " + maxLength + " character long and not contain any special characters";
     private final String usernameTaken = "This username is already in use";
     private final String wrongPassword = "Password has to be at least " + minLength + " characters and at most " + maxLength + " character long." +
             "It has to contain at least one capital letter, at least one digit and no special characters";
@@ -96,7 +96,7 @@ public class RegisterViewController {
 
     private boolean containsSpecialCharacters(String text) {
         for(char c : text.toCharArray()) {
-            if(!Character.isLetter(c) || !Character.isDigit(c)) {
+            if(!Character.isLetter(c) && !Character.isDigit(c)) {
                 return true;
             }
         }
