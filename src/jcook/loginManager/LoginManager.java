@@ -12,7 +12,7 @@ import java.util.List;
 public class LoginManager {
 
     private static boolean offline = false;
-    static private User currentUser = null;
+    private static User currentUser = null;
 
     public static void logOut() {
         offline = false;
@@ -21,7 +21,7 @@ public class LoginManager {
 
     public static boolean joinOffline() {
         if(offline == true || currentUser != null) {
-            System.out.println("Player already logged in");
+            System.out.println("User already logged in");
             return false;
         }
         offline = true;
@@ -30,7 +30,7 @@ public class LoginManager {
 
     public static boolean logIn(String username, String password) {
         if(offline == true || currentUser != null) {
-            System.out.println("Player already logged in");
+            System.out.println("User already logged in");
             return false;
         }
         CombinedFilter userFilter = new CombinedFilter(Filters::and);
