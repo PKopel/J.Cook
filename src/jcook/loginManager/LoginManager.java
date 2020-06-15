@@ -14,17 +14,22 @@ public class LoginManager {
     private static boolean offline = false;
     static private User currentUser = null;
 
-    static void logOut() {
+    public static void logOut() {
         offline = false;
         currentUser = null;
     }
 
-    static void joinOffline() {
-        offline= true;
+    public static boolean joinOffline() {
+        if(offline == true || currentUser != null) {
+            System.out.println("Player already logged in");
+            return false;
+        }
+        offline = true;
+        return true;
     }
 
-    static boolean logIn(String username, String password) {
-        if(currentUser != null) {
+    public static boolean logIn(String username, String password) {
+        if(offline == true || currentUser != null) {
             System.out.println("Player already logged in");
             return false;
         }
@@ -43,9 +48,9 @@ public class LoginManager {
         }
     }
 
-    static User getLoggedUser() {
+    public static User getLoggedUser() {
         if(offline) {
-            return new User("Offline", null, null);
+            return new User("Offline", null, null, "Offline");
         } else {
             return currentUser;
         }
