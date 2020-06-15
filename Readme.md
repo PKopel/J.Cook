@@ -19,7 +19,7 @@ Main package jcook consists of five subpackages:
 
 Database used by J.Cook consists of two collections: *recipe* and *user*. Documents in collection *recipe* look
 like this: 
-```json
+```
 {
     "name":<name>,
     "image":{
@@ -49,7 +49,7 @@ like this:
 Documents in collection *user* look like this one:
 
 
-```json
+```
 {
       "_id":{"$oid":<id>},
       "name": <name>,
