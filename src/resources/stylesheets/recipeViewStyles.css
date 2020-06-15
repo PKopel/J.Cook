@@ -1,3 +1,7 @@
 Label {
     -fx-text-alignment: left;
 }
+#recipeDescription {
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}

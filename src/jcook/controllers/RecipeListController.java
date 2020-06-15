@@ -95,7 +95,7 @@ public class RecipeListController {
                         recipeViewController.setRecipe(row.getItem());
                         final Stage recipeView = new Stage();
                         recipeView.initModality(Modality.APPLICATION_MODAL);
-                        Scene recipeViewScene = new Scene(recipeViewPane, 600, 700);
+                        Scene recipeViewScene = new Scene(recipeViewPane, 1024, 768);
                         recipeView.setScene(recipeViewScene);
                         recipeView.show();
                     } catch (IOException ex) {

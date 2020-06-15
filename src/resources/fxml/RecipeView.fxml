@@ -1,36 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" stylesheets="@../stylesheets/recipeViewStyles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="jcook.controllers.RecipeViewController">
+<GridPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" stylesheets="@../stylesheets/recipeViewStyles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jcook.controllers.RecipeViewController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="357.0" minHeight="7.0" prefHeight="122.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="612.0" minHeight="10.0" prefHeight="226.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="420.0" minHeight="10.0" prefHeight="420.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="357.0" minHeight="7.0" prefHeight="63.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="612.0" minHeight="10.0" prefHeight="138.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="440.0" minHeight="10.0" prefHeight="110.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="440.0" minHeight="10.0" prefHeight="195.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="440.0" minHeight="10.0" prefHeight="268.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label fx:id="recipeNameLabel" prefHeight="73.0" prefWidth="1042.0" style="-fx-alignment: center; -fx-font-size: 24; -fx-border-color: grey;" text="Recipe name" />
+      <Label fx:id="recipeNameLabel" prefHeight="59.0" prefWidth="1024.0" style="-fx-alignment: center; -fx-font-size: 24; -fx-border-color: grey;" text="Recipe name" />
       <GridPane style="-fx-alignment: center;" GridPane.rowIndex="1">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="876.0" minWidth="10.0" prefWidth="876.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="507.0" minWidth="10.0" prefWidth="150.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ListView fx:id="ingredientList" prefHeight="200.0" prefWidth="200.0" />
-            <ImageView fx:id="recipeImage" fitHeight="150.0" fitWidth="203.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+            <ListView fx:id="ingredientList" prefHeight="200.0" prefWidth="721.0" />
+            <ImageView fx:id="recipeImage" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <Label fx:id="recipeDescription" prefHeight="432.0" prefWidth="1024.0" text="Actual description" GridPane.rowIndex="2" />
+      <ScrollPane fx:id="descriptionScroll" prefHeight="187.0" prefWidth="1024.0" GridPane.rowIndex="2">
+         <content>
+            <Text fx:id="recipeDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="Actual description" wrappingWidth="1021.359375" />
+         </content>
+      </ScrollPane>
+      <ListView fx:id="commentList" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4" />
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
+         <children>
+            <TextArea fx:id="commentArea" prefHeight="200.0" prefWidth="200.0" />
+            <HBox fx:id="commentControls">
+               <children>
+                  <Button fx:id="commentButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="275.0" text="Add comment" textAlignment="CENTER" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </GridPane>
