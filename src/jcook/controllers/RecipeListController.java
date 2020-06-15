@@ -134,7 +134,12 @@ public class RecipeListController {
                         setText(null);
                         setGraphic(null);
                     } else {
-                        setText(getTableRow().getItem().avgRating().toString());
+                        if(getTableRow().getItem() != null)
+                        setText(
+                                getTableRow()
+                                        .getItem()
+                                        .avgRating()
+                                        .toString());
                         setGraphic(imageView);
                     }
                 }
