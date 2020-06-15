@@ -1,6 +1,5 @@
 package jcook.providers;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
@@ -9,17 +8,19 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 import jcook.filters.Filter;
-import jcook.filters.NameFilter;
+import jcook.filters.IdFilter;
 import jcook.models.Category;
-import jcook.models.Ingredient;
 import jcook.models.Model;
-import jcook.models.Recipe;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.conversions.Bson;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -56,37 +57,34 @@ public abstract class AbstractProvider<T extends Model> {
     }
 
     /* for updating simple fields */
-    public void updateObject(T object, String propertyName){
-        BasicDBObject query = new BasicDBObject();
-        query.put("_id", object.getId());
+    public void updateObject(T oldObject, T newObject) {
+        List<Bson> updates = new ArrayList<>();
         try {
-            Field property = clazz.getDeclaredField(propertyName);
-            property.setAccessible(true);
-            db.getCollection(collectionName)
-                    .updateOne(
-                            query,Updates.set(
-                                    propertyName,
-                                    property.getType().cast(property.get(object)
-                                    )
-                            )
-                    );
+            for (Field property : oldObject.getClass().getDeclaredFields()) {
+                property.setAccessible(true);
+                if ((property.get(oldObject) != null && property.get(newObject) != null &&
+                        !property.get(oldObject).equals(property.get(newObject))) ||
+                        (property.get(oldObject) == null && property.get(newObject) != null)) {
+                    System.out.println("different " + property.getName());
+                    updates.add(Updates.set(
+                            property.getName(),
+                            property.getName().equals("categories") ?
+                                    ((Collection<Category>) property.get(newObject)).stream().map(Object::toString).collect(Collectors.toList()) :
+                                    property.getType().cast(property.get(newObject))));
+                }
+            }
+            db.getCollection(collectionName).updateOne(new IdFilter(oldObject.getId()).getQuery(), Updates.combine(updates));
         } catch (Exception e) {
-            System.out.println("illegal property update attempt");
+            System.out.println("illegal access attempt");
         }
     }
 
-    /* for updating arrays */
-    public <V> void updateObject(T object, V newElement, String arrayName){
-        BasicDBObject query = new BasicDBObject();
-        try {
-            query.put("_id", object.getId());
-            db.getCollection(collectionName).updateOne(query,Updates.push(arrayName, newElement));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+    /* for adding to arrays */
+    public <V> void updateObject(T object, V newElement, String arrayName) {
+        db.getCollection(collectionName).updateOne(new IdFilter(object.getId()).getQuery(), Updates.push(arrayName, newElement));
     }
 
-    public void deleteObjects(Filter filter){
+    public void deleteObjects(Filter filter) {
         db.getCollection(collectionName).deleteMany(filter.getQuery());
     }
 }
