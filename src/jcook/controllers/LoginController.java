@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import jcook.loginManager.LoginManager;
+import jcook.authentication.LoginManager;
 
 import java.io.IOException;
 

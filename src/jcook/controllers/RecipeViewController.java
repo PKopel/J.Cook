@@ -52,7 +52,7 @@ public class RecipeViewController {
         if (recipe.getRenderedImage() != null)
             recipeImage.setImage(recipe.getRenderedImage());
         recipeDescription.setText(recipe.getDescription());
-        commentList.setItems(FXCollections.observableList((List)recipe.getRatings()));
+        commentList.setItems(FXCollections.observableList(recipe.getRatings()));
     }
 
     public void initialize() {
@@ -106,7 +106,7 @@ public class RecipeViewController {
                         commentContent.setText(rating.getDescription());
 
                         List<User> users = UserProvider.getInstance().getObjects(new IdFilter(rating.getAuthor()));
-                        author.setText("By: " + (users.size() == 0 ? "Unkown user" : users.get(0)));
+                        author.setText("By: " + (users.size() == 0 ? "Unknown user" : users.get(0)));
                         date.setText("Added: " + rating.getDate());
                         setGraphic(vbox);
                     }
