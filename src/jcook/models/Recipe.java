@@ -54,7 +54,11 @@ public class Recipe implements Model {
 
     @BsonIgnore
     public Image getRenderedImage() {
-        return new Image(new ByteArrayInputStream(getImage()));
+        if (image != null) {
+            return new Image(new ByteArrayInputStream(image));
+        } else {
+            return null;
+        }
     }
 
     public byte[] getImage() {

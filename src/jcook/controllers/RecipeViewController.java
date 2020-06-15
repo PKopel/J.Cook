@@ -18,17 +18,15 @@ public class RecipeViewController {
     ImageView recipeImage;
     @FXML
     Label recipeDescription;
-    private Recipe recipe;
 
     public RecipeViewController() {
     }
 
     public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-
         recipeNameLabel.setText(recipe.getName());
         ingredientList.setItems(FXCollections.observableList(recipe.getIngredients()));
-        recipeImage.setImage(recipe.getRenderedImage());
+        if (recipe.getRenderedImage() != null)
+            recipeImage.setImage(recipe.getRenderedImage());
         recipeDescription.setText(recipe.getDescription());
     }
 
