@@ -9,42 +9,36 @@
 
 Main package jcook consists of five subpackages:
 
-1. ```jcook.controllers``` containing GUI controller classes
+1. ```jcook.controllers``` containing GUI controller classes. Each fxml file has a corresponding Controller in
+ ```jcook.controllers``` package. This is where data to tables/lists/etc. is loaded, where Button handlers are registered, etc.
+
 2. ```jcook.filters``` containing classes used to generate database queries. Queries are generated
 in form of BSON objects with use of **Filters** class provided by Mongo Java Driver. Each query is wrapped for
- convenience in class implementing interface Filter.
+ convenience in class implementing interface Filter. One special case is CombinedFilter class taking a collection 
+ of Filters and function to combine them (for example Filters::and/Filters::or) to create a more complex filter.
 3. ```jcook.models``` containing data model classes. These classes are directly serialized to BSON
 objects via the POJO Codec.
-4. ```jcook.providers``` containing classes responsible for connection with the database. Main class in this package
-is generic AbstractProvider with methods for creating, updating, reading and deleting objects in the database. It uses 
-POJO Codec to create and retrieve objects and reflection paired with **Updates** class from Mongo Java Driver for
- updating. Classes RecipeProvider and UserProvider use generic argument of AbstractProvider to create class-specific
-  methods for interaction with the database. They are implemented as singletons to allow access to them from any 
-  other part of the code.
-5. ```jcook.authentication``` for user authentication
+4. ```jcook.providers``` containing classes responsible for connection with the database. 
+    - Main class in this package
+    is generic AbstractProvider<T> with methods:
+        - ```getObjects(Filter filter)``` - Returns collection of objects of type T retrieved from database collection with a query
+     from argument filter. Objects are quietly cast to type T by POJO Codec.
+        - ```addObject(T object)``` - Adds a new object to database collection via the POJO Codec.
+        - ```updateObject(T oldObject, T newObject)``` - uses reflection to find differences between oldObject and newObject, and 
+    **Updates** class from Mongo Java Driver to save changes in the database.
+        - ```updateObject(T object, V newElement, String arrayName)``` - Adds newElement to the object's array of name
+         *arrayName* in the database.
+        - ```deleteObjects(Filter filter)``` - Removes all objects matching the filter's query from the database.
+    - Classes RecipeProvider and UserProvider use generic argument of AbstractProvider to create class-specific
+      methods for interaction with the database. They are implemented as singletons to allow access to them from any 
+      other part of the code.
+5. ```jcook.authentication``` for user authentication. Its only class LoginManager is responsible for managing 
+user session. It is implemented as a singleton to allow access to it from any other part of the code.
 
 Package resources contains two subpackages essential for code to work:
 
 1. ```resources.fxml``` containing fxml files for each of the application views
 2. ```resources.stylesheets``` containing css files with styles for gui 
-
-More about each package:
-
-1. ```jcook.controllers``` Controllers for javafx gui. Each fxml file has a corresponding Controller in 	```jcook.controllers``` package. This is where data to tables/lists/etc. is loaded, where Button handlers are registered, etc.
-2. ```jcook.filters``` Filters for database collections: 
-   - Filter interface - it can be implemented, to get only those objects that fulfill BSON query defined in getQuery() method. 
-   - CombinedFilter - Sometimes there is need for more than just one filter and this is where CombinedFilter shines - It takes a collection of Filters and a Function that Combine them (for example Filters::and/Filters::or), combines the filters and therefore it makes it a more complex filter.
-   - NameFilter, IdFilter, etc. - the other filters are just implementations of the Filter interface which were used in the project
-3. ```jcook.models``` Models for objects returned from the database - They represent objects taken from the database and they can be used to create corresponding providers
-4. ```jcook.provider``` Database objects providers:
-   - AbstractProvider - Abstraction achieved in this class enables us to make provider for each model in a very simple way. It has a few important methods:
-     - getObjects(Filter filter) - Returns objects from database collection filtered with a filter passed as an argument
-     - addObject(T object) - Adds a new object to database collection
-     - public void updateObject(T oldObject, T newObject) - Finds oldObject in the database and updates it with differences from newObject
-     - public <V> void updateObject(T object, V newElement, String arrayName) - Adds newElement to the object's array represented by arrayName in the database
-     - public void deleteObjects(Filter filter) - Removes all objects matching the filter's requirements from the database
-   - RecipeProvider, UserProvider - Acutal providers extending the AbstractProvider. By abstraction achieved in the AbstractProvider, theese classes are very simple and, if a new collection has to be added, another provider can be added in a very simple way. They are singleton classes.
-5. ```jcook.authentication``` It consists one class: LoginManager - It is singleton so that any other class can get info about currently logged user. It also performs authentication (Which is important as the passwords are encrypted).
 
 ## Database structure
 
@@ -55,7 +49,7 @@ like this:
 {
     "name":<name>,
     "image":{
-        "$binary":<binary>,
+        "$binary":<image bytes>,
         "$type":"00"
         },
     "ingredients":[{
@@ -78,7 +72,7 @@ like this:
 ```
 Example:
 
-```JSON
+```
 {
     "_id" : ObjectId("5ee87ac80014fe7bc76015b3"),
     "categories" : [ 
@@ -87,7 +81,10 @@ Example:
         "VEGAN"
     ],
     "description" : "Slice lemons. Add 500 ml of water. Add 125g of sugar. Add 500ml of water. Mix for 30 seconds. If you'd like to have your drink colder, you might add some ice. Enjoy!",
-    "image" : { "$binary" : <image bytes>},
+    "image" : { 
+        "$binary" : <image bytes>, 
+        "$type":"00"
+        },
     "ingredients" : [ 
         {
             "name" : "Lemons",
@@ -141,15 +138,15 @@ Documents in collection *user* look like this one:
       "_id":<object id>,
       "name": <name>,
       "image":{
-            "$binary":<binary>,
+            "$binary":<image bytes>,
             "$type":"00"
             },
       "password":{
-            "$binary":<binary>,
+            "$binary":<password hash bytes>,
             "$type":"00"
             },
       "salt":{
-            "$binary":<binary>,
+            "$binary":<salt bytes>,
             "$type":"00"
             },
       "rated_recipes":[<object id>],
@@ -158,21 +155,30 @@ Documents in collection *user* look like this one:
 ```
 Example:
 
-```JSON
+```
 {
     "_id": ObjectId("5ee87a320014fe7bc76015b2"),
-	"image": {"$binary" : <image bytes>},
+	"image": {
+        "$binary" : <image bytes>,
+        "$type":"00"
+        },
 	"name" : "Geralt",
-    "password" : { "$binary" : "OAkxQG19L3LyA2dS0Z1jvA==", "$type" : "00" },
+    "password" : { 
+        "$binary" : "OAkxQG19L3LyA2dS0Z1jvA==", 
+        "$type" : "00"
+        },
     "rated_recipes" : [ 
         ObjectId("5ee87ac80014fe7bc76015b3"), 
         ObjectId("5ee87c580014fe7bc76015b4")
-    ],
-    "salt" : { "$binary" : "AL6YKZXzOOUgIZaHSiOnMQ==", "$type" : "00" },
+        ],
+    "salt" : { 
+        "$binary" : "AL6YKZXzOOUgIZaHSiOnMQ==", 
+        "$type" : "00" 
+        },
     "uploaded_recipes" : [ 
         ObjectId("5ee87ac80014fe7bc76015b3"), 
         ObjectId("5ee87c580014fe7bc76015b4")
-    ]
+        ]
 }
 ```
 
