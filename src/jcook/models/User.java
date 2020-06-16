@@ -35,6 +35,16 @@ public class User implements Model {
         this.salt = salt;
     }
 
+    public User(User other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.uploadedRecipes = new LinkedList<>(other.uploadedRecipes);
+        this.ratedRecipes = new LinkedList<>(other.ratedRecipes);
+        this.password = other.password;
+        this.salt = other.salt;
+        this.image = other.image;
+    }
+
     @BsonIgnore
     public static User offlineUser() throws IOException {
         return new User("offline", new LinkedList<>(), new LinkedList<>(), new byte[]{0}, new byte[]{0},

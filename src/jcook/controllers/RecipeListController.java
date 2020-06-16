@@ -62,8 +62,6 @@ public class RecipeListController {
     @FXML
     GridPane recipeListContentPane;
 
-    // TODO: Would be nice to have returned types as Observables
-
     @FXML
     public void initialize() throws IOException {
         currentFilter.addFilter(new NameFilter(""));
@@ -75,7 +73,6 @@ public class RecipeListController {
     }
 
     private void initRecipeTable() {
-        // TODO: Consider changing return types from Recipe to StringProperty, etc.
         this.recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
 
         // On-click handler
@@ -88,6 +85,7 @@ public class RecipeListController {
                         GridPane recipeViewPane = loader.load();
                         RecipeViewController recipeViewController = loader.getController();
                         recipeViewController.setRecipe(row.getItem());
+                        recipeViewController.setRecipeListController(this);
                         final Stage recipeView = new Stage();
                         recipeView.initModality(Modality.APPLICATION_MODAL);
                         Scene recipeViewScene = new Scene(recipeViewPane, 1024, 768);
@@ -199,10 +197,8 @@ public class RecipeListController {
 
         userImage.setImage(LoginManager.getInstance().getLoggedUser().getRenderedImage());
         userButtons.setText(LoginManager.getInstance().getLoggedUser().getName());
-        // TODO: implement functionality
         openProfile.setOnAction(e -> System.out.println("Opening profile"));
         logOut.setOnAction(e -> {
-            // TODO: Close all recipe windows
             LoginManager.getInstance().logOut();
             ((Stage) recipeListContentPane.getScene().getWindow()).close();
 

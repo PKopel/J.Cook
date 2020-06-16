@@ -59,6 +59,7 @@ public class RecipeFormController {
     private byte[] imageBytes;
     private RecipeListController recipeListController;
 
+
     public void setRecipeListController(RecipeListController recipeListController) {
         this.recipeListController = recipeListController;
     }
@@ -210,9 +211,11 @@ public class RecipeFormController {
     }
 
     @SuppressWarnings("unchecked")
-    public void setRecipe(Recipe recipe) {
+    public void setRecipe(Recipe recipe, RecipeViewController controller) {
         name.textProperty().setValue(recipe.getName());
         description.textProperty().setValue(recipe.getDescription());
+        imageBytes = recipe.getImage();
+        currentImageView.setImage(recipe.getRenderedImage());
 
         recipe.getCategories().forEach(category -> {
             List<Node> children = categoryPane.getChildren();
@@ -254,9 +257,10 @@ public class RecipeFormController {
                     tagList.stream().filter(Objects::nonNull).collect(Collectors.toList()),
                     categoryList.stream().filter(Objects::nonNull).collect(Collectors.toList())
             );
-            recipeListController.refresh();
             updated.setId(recipe.getId());
             RecipeProvider.getInstance().updateObject(recipe, updated);
+            controller.setRecipe(updated);
+            recipeListController.refresh();
             ((Stage) save.getScene().getWindow()).close();
         });
     }

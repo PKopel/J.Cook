@@ -4,7 +4,9 @@ import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,7 +16,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import jcook.filters.CombinedFilter;
 import jcook.filters.Filter;
 import jcook.filters.IdFilter;
 import jcook.authentication.LoginManager;
@@ -69,6 +73,12 @@ public class RecipeViewController {
     private final User currentUser = loginManager.getLoggedUser();
     private User owner;
 
+    private RecipeListController recipeListController;
+
+    public void setRecipeListController(RecipeListController recipeListController) {
+        this.recipeListController = recipeListController;
+    }
+
     public RecipeViewController() throws IOException {
     }
 
@@ -86,7 +96,7 @@ public class RecipeViewController {
         if (recipe.getRenderedImage() != null)
             recipeImage.setImage(recipe.getRenderedImage());
         recipeDescription.setText(recipe.getDescription());
-        refresh();
+        refreshComments();
         initOwnerButtons();
     }
 
@@ -99,11 +109,36 @@ public class RecipeViewController {
     private void initOwnerButtons() {
         if(currentUser.getId().equals(owner.getId())) {
             deleteButton.addEventHandler(ActionEvent.ACTION, e -> {
+                List<User> allUsers = UserProvider.getInstance().getObjects(new CombinedFilter(Filters::and));
+                for(User user: allUsers) {
+                    if(user.getRatedRecipes().contains(recipe.getId()) || user.getUploadedRecipes().contains(recipe.getId())) {
+                        User updatedUser = new User(user);
+                        updatedUser.getRatedRecipes().remove(recipe.getId());
+                        updatedUser.getUploadedRecipes().remove(recipe.getId());
+                        UserProvider.getInstance().updateObject(user, updatedUser);
+                    }
+                }
+
                 RecipeProvider.getInstance().deleteObjects(new IdFilter(recipe.getId()));
+                recipeListController.refresh();
                 ((Stage) mainPane.getScene().getWindow()).close();
             });
             updateButton.addEventHandler(ActionEvent.ACTION, e -> {
-                // TODO: implement
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RecipeForm.fxml"));
+                    GridPane recipeFormPane = loader.load();
+                    RecipeFormController controller = loader.getController();
+                    controller.setRecipe(recipe, this);
+                    controller.setRecipeListController(recipeListController);
+
+                    final Stage recipeForm = new Stage();
+                    recipeForm.initModality(Modality.APPLICATION_MODAL);
+                    Scene recipeFormScene = new Scene(recipeFormPane, 600, 700);
+                    recipeForm.setScene(recipeFormScene);
+                    recipeForm.show();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             });
         } else {
             deleteButton.setVisible(false);
@@ -144,7 +179,8 @@ public class RecipeViewController {
                         currentUser.getId());
                 UserProvider.getInstance().updateObject(currentUser, recipe.getId(), "rated_recipes");
                 RecipeProvider.getInstance().updateObject(recipe, comment, "ratings");
-                refresh();
+                refreshComments();
+                recipeListController.refresh();
             });
         }
     }
@@ -190,7 +226,7 @@ public class RecipeViewController {
         });
     }
 
-    private void refresh() {
+    private void refreshComments() {
         recipe = RecipeProvider.getInstance().getObjects(new IdFilter(recipe.getId())).get(0);
         commentList.setItems(FXCollections.observableList(recipe.getRatings()));
         if(recipe.getRatings().stream().anyMatch(o -> o.getAuthor().equals(currentUser.getId()))) {
