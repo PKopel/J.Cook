@@ -64,8 +64,6 @@ public class RecipeListController {
 
     @FXML
     public void initialize() throws IOException {
-        currentFilter.addFilter(new NameFilter(""));
-
         initRecipeTable();
         initFilterList();
         initFilterAddingList();

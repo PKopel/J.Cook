@@ -107,7 +107,7 @@ public class RecipeViewController {
     }
 
     private void initOwnerButtons() {
-        if(currentUser.getId().equals(owner.getId())) {
+        if(!loginManager.offlineSession() && currentUser.getId().equals(owner.getId())) {
             deleteButton.addEventHandler(ActionEvent.ACTION, e -> {
                 List<User> allUsers = UserProvider.getInstance().getObjects(new CombinedFilter(Filters::and));
                 for(User user: allUsers) {
