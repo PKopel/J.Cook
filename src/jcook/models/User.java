@@ -14,10 +14,8 @@ public class User implements Model {
 
     private ObjectId id;
     private String name;
-    @BsonProperty("uploaded_recipes")
-    private List<ObjectId> uploadedRecipes;
-    @BsonProperty("rated_recipes")
-    private List<ObjectId> ratedRecipes;
+    private List<ObjectId> uploaded;
+    private List<ObjectId> rated;
     private byte[] password;
     private byte[] salt;
     private byte[] image;
@@ -25,11 +23,11 @@ public class User implements Model {
     public User() {
     }
 
-    public User(String name, List<ObjectId> uploadedRecipes, List<ObjectId> ratedRecipes,
+    public User(String name, List<ObjectId> uploaded, List<ObjectId> rated,
                 byte[] salt, byte[] password, byte[] image) {
         this.name = name;
-        this.uploadedRecipes = uploadedRecipes;
-        this.ratedRecipes = ratedRecipes;
+        this.uploaded = uploaded;
+        this.rated = rated;
         this.password = password;
         this.image = image;
         this.salt = salt;
@@ -38,8 +36,8 @@ public class User implements Model {
     public User(User other) {
         this.id = other.id;
         this.name = other.name;
-        this.uploadedRecipes = new LinkedList<>(other.uploadedRecipes);
-        this.ratedRecipes = new LinkedList<>(other.ratedRecipes);
+        this.uploaded = new LinkedList<>(other.uploaded);
+        this.rated = new LinkedList<>(other.rated);
         this.password = other.password;
         this.salt = other.salt;
         this.image = other.image;
@@ -80,20 +78,20 @@ public class User implements Model {
         this.name = name;
     }
 
-    public List<ObjectId> getUploadedRecipes() {
-        return uploadedRecipes;
+    public List<ObjectId> getUploaded() {
+        return uploaded;
     }
 
-    public void setUploadedRecipes(List<ObjectId> uploadedRecipes) {
-        this.uploadedRecipes = uploadedRecipes;
+    public void setUploaded(List<ObjectId> uploaded) {
+        this.uploaded = uploaded;
     }
 
-    public List<ObjectId> getRatedRecipes() {
-        return ratedRecipes;
+    public List<ObjectId> getRated() {
+        return rated;
     }
 
-    public void setRatedRecipes(List<ObjectId> ratedRecipes) {
-        this.ratedRecipes = ratedRecipes;
+    public void setRated(List<ObjectId> rated) {
+        this.rated = rated;
     }
 
     public ObjectId getId() {

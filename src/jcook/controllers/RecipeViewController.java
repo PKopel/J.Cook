@@ -111,10 +111,10 @@ public class RecipeViewController {
             deleteButton.addEventHandler(ActionEvent.ACTION, e -> {
                 List<User> allUsers = UserProvider.getInstance().getObjects(new CombinedFilter(Filters::and));
                 for(User user: allUsers) {
-                    if(user.getRatedRecipes().contains(recipe.getId()) || user.getUploadedRecipes().contains(recipe.getId())) {
+                    if(user.getRated().contains(recipe.getId()) || user.getUploaded().contains(recipe.getId())) {
                         User updatedUser = new User(user);
-                        updatedUser.getRatedRecipes().remove(recipe.getId());
-                        updatedUser.getUploadedRecipes().remove(recipe.getId());
+                        updatedUser.getRated().remove(recipe.getId());
+                        updatedUser.getUploaded().remove(recipe.getId());
                         UserProvider.getInstance().updateObject(user, updatedUser);
                     }
                 }
