@@ -5,3 +5,6 @@ Label {
     -fx-padding: 5px;
     -fx-font-size: 14px;
 }
+#commentArea HBox {
+    -fx-alignment: center;
+}

@@ -26,6 +26,7 @@ import jcook.providers.RecipeProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class RecipeListController {
@@ -58,8 +59,6 @@ public class RecipeListController {
 
     @FXML
     Button recipeFormButton;
-    @FXML
-    Button recipeListButton;
     @FXML
     GridPane recipeListContentPane;
 
@@ -155,8 +154,7 @@ public class RecipeListController {
 
             removeFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
                 currentFilter.removeFilter(f[0]);
-                filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
-                recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
+                refresh();
             });
 
             BorderPane.setAlignment(label, Pos.CENTER_LEFT);
@@ -188,6 +186,7 @@ public class RecipeListController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RecipeForm.fxml"));
                 GridPane recipeFormPane = loader.load();
+                ((RecipeFormController)loader.getController()).setRecipeListController(this);
                 final Stage recipeForm = new Stage();
                 recipeForm.initModality(Modality.APPLICATION_MODAL);
                 Scene recipeFormScene = new Scene(recipeFormPane, 600, 700);
@@ -229,8 +228,7 @@ public class RecipeListController {
         Button addNameFilterButton = new Button("Add filter");
         addNameFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
             currentFilter.addFilter(new NameFilter(nameField.getText()));
-            recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
-            filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
+            refresh();
         });
         nameFilter.getChildren().addAll(new Label("Name"), nameField, addNameFilterButton);
         filterForms.add(nameFilter);
@@ -243,8 +241,7 @@ public class RecipeListController {
         Button addCategoryFilterButton = new Button("Add filter");
         addCategoryFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
             currentFilter.addFilter(new CategoryFilter(categoryBox.getSelectionModel().getSelectedItem()));
-            recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
-            filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
+            refresh();
         });
         categoryFilter.getChildren().addAll(new Label("Category"), categoryBox, addCategoryFilterButton);
         categoryBox.setMaxWidth(5000.0);
@@ -257,19 +254,17 @@ public class RecipeListController {
         Button addTagFilterButton = new Button("Add filter");
         addTagFilterButton.addEventHandler(ActionEvent.ACTION, e -> {
             currentFilter.addFilter(new TagFilter(tagField.getText()));
-            recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
-            filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
+            refresh();
         });
         tagFilter.getChildren().addAll(new Label("Tag"), tagField, addTagFilterButton);
         filterForms.add(tagFilter);
 
-        /* Minimal rating filter */
-        /*VBox minRatingFilter = new VBox();
-        minRatingFilter.getStyleClass().add("filter");*/
-
-        /* Maximal rating filter */
 
         filterAddingList.getChildren().addAll(filterForms);
     }
 
+    public void refresh() {
+        recipeTable.setItems(FXCollections.observableList(recipeProvider.getObjects(currentFilter)));
+        filtersList.setItems(FXCollections.observableList(currentFilter.getFilters()));
+    }
 }

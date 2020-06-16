@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
 
@@ -17,7 +18,7 @@ public class Recipe implements Model {
 
     private byte[] image;
     private List<Ingredient> ingredients;
-    private List<Rating> ratings;
+    private List<Rating> ratings = new ArrayList<>();
     private List<String> tags;
     private List<Category> categories;
 

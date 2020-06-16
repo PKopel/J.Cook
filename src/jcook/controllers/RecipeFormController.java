@@ -50,6 +50,11 @@ public class RecipeFormController {
     private int ingredientIndex = 0;
     private int tagIndex = 0;
     private byte[] imageBytes;
+    private RecipeListController recipeListController;
+
+    public void setRecipeListController(RecipeListController recipeListController) {
+        this.recipeListController = recipeListController;
+    }
 
     private BiConsumer<GridPane, Button> nextCategory(int index) {
         return (grid, add) -> {
@@ -184,6 +189,7 @@ public class RecipeFormController {
                     tagList.stream().filter(Objects::nonNull).collect(Collectors.toList()),
                     categoryList.stream().filter(Objects::nonNull).collect(Collectors.toList())
             ));
+            recipeListController.refresh();
             ((Stage) save.getScene().getWindow()).close();
         });
     }
@@ -233,6 +239,7 @@ public class RecipeFormController {
                     tagList.stream().filter(Objects::nonNull).collect(Collectors.toList()),
                     categoryList.stream().filter(Objects::nonNull).collect(Collectors.toList())
             );
+            recipeListController.refresh();
             updated.setId(recipe.getId());
             RecipeProvider.getInstance().updateObject(recipe, updated);
             ((Stage) save.getScene().getWindow()).close();
