@@ -85,7 +85,7 @@ After opening the app, user sees login panel - he can either log in, start new a
 
 During registration user can specify his username, password and profile image. Password has to contain at least one capital letter and at least one digit.
 
-![J.Cook](https://github.com/mwegrzyn2311/J.Cook/blob/master/readmeImages/RecipeView.JPG)
+![J.Cook](https://github.com/mwegrzyn2311/J.Cook/blob/master/readmeImages/RecipeListView.JPG)
 
 After logging in, user sees list of recipes from the database, he can add new filters to find what he is looking for using the left panel and check or remove them using the right panel. The header contains button "Add recipes" which is only there if user is logged with and actual account and can be used to start adding a new recipe. He can also double-click a recipe from the list to see its details.
 
