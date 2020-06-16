@@ -41,9 +41,7 @@ like this:
         "stars":<integer>,
         "description":<description>,
         "date":<dd/mm/yyyy>,
-        "author":{
-            "$oid":<id>
-            }
+        "author":<object id>
         }],
     "categories":[
 <"BEVERAGE"|"ALCOHOL"|"SOUP"|"DESSERT"|"BREAKFAST"|"MEAT"|"VEGAN"|"VEGETARIAN">
@@ -57,7 +55,7 @@ Documents in collection *user* look like this one:
 
 ```
 {
-      "_id":{"$oid":<id>},
+      "_id":<object id>,
       "name": <name>,
       "image":{
             "$binary":<binary>,
