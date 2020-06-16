@@ -10,15 +10,23 @@
 Main package jcook consists of five subpackages:
 
 1. ```jcook.controllers``` containing GUI controller classes
-2. ```jcook.filters``` containing classes used to generate database queries
-3. ```jcook.models``` containing data model classes
-4. ```jcook.providers``` containing classes responsible for connection with database
+2. ```jcook.filters``` containing classes used to generate database queries. Queries are generated
+in form of BSON objects with use of **Filters** class provided by Mongo Java Driver. Each query is wrapped for
+ convenience in class implementing interface Filter.
+3. ```jcook.models``` containing data model classes. These classes are directly serialized to BSON
+objects via the POJO Codec.
+4. ```jcook.providers``` containing classes responsible for connection with the database. Main class in this package
+is generic AbstractProvider with methods for creating, updating, reading and deleting objects in the database. It uses 
+POJO Codec to create and retrieve objects and reflection paired with **Updates** class from Mongo Java Driver for
+ updating. Classes RecipeProvider and UserProvider use generic argument of AbstractProvider to create class-specific
+  methods for interaction with the database. They are implemented as singletons to allow access to them from any 
+  other part of the code.
 5. ```jcook.authentication``` for user authentication
 
 Package resources contains two subpackages essential for code to work:
 
 1. ```resources.fxml``` containing fxml files for each of the application views
-2. ```resources.stylesheets``` containing css files with styles for gui
+2. ```resources.stylesheets``` containing css files with styles for gui 
 
 ## Database structure
 
