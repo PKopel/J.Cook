@@ -1,6 +1,6 @@
 # J.Cook
 
-![J.Cook](https://github.com/PKopel/J.Cook/blob/master/j_cook.jpeg)
+![J.Cook](https://github.com/mwegrzyn2311/J.Cook/blob/master/readmeImages/j_cook.jpeg)
 
 *J.Cook* is a simple cookbook application build with *[mongoDB](https://www.mongodb.com)* and 
 *[Java 11](https://openjdk.java.net/projects/jdk/11/)*. 
@@ -15,10 +15,16 @@ Main package jcook consists of five subpackages:
 4. ```jcook.providers``` containing classes responsible for connection with database
 5. ```jcook.authentication``` for user authentication
 
+Package resources contains two subpackages essential for code to work:
+
+1. ```resources.fxml``` containing fxml files for each of the application views
+2. ```resources.stylesheets``` containing css files with styles for gui
+
 ## Database structure
 
 Database used by J.Cook consists of two collections: *recipe* and *user*. Documents in collection *recipe* look
 like this: 
+
 ```
 {
     "name":<name>,
