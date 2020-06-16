@@ -64,8 +64,6 @@ public class RecipeListController {
 
     @FXML
     public void initialize() throws IOException {
-        currentFilter.addFilter(new NameFilter(""));
-
         initRecipeTable();
         initFilterList();
         initFilterAddingList();
@@ -107,12 +105,14 @@ public class RecipeListController {
             TableCell<Recipe, Image> cell = new TableCell<>() {
                 @Override
                 public void updateItem(Image image, boolean empty) {
-                    if (!empty) {
+                    if(empty) {
+                        setGraphic(null);
+                    } else {
                         imageView.setImage(image);
+                        setGraphic(imageView);
                     }
                 }
             };
-            cell.setGraphic(imageView);
             return cell;
         });
         this.iconColumn.setCellValueFactory(new PropertyValueFactory<>("renderedImage"));
