@@ -4,10 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -53,6 +50,8 @@ public class RecipeFormController {
     TextArea description;
     @FXML
     ImageView currentImageView;
+    @FXML
+    Label infoLabel;
     private int categoryIndex = 0;
     private int ingredientIndex = 0;
     private int tagIndex = 0;
@@ -212,6 +211,7 @@ public class RecipeFormController {
 
     @SuppressWarnings("unchecked")
     public void setRecipe(Recipe recipe, RecipeViewController controller) {
+        infoLabel.textProperty().setValue("Updating a recipe");
         name.textProperty().setValue(recipe.getName());
         description.textProperty().setValue(recipe.getDescription());
         imageBytes = recipe.getImage();

@@ -25,7 +25,7 @@
         <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="159.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="143.0" minHeight="10.0" prefHeight="143.0" vgrow="SOMETIMES" />
     </rowConstraints>
-    <Label alignment="CENTER" text="New recipe" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+    <Label fx:id="infoLabel" alignment="CENTER" text="New recipe" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
         <font>
             <Font size="24.0" />
         </font>
