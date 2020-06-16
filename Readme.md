@@ -8,7 +8,7 @@
 ## Running project
 
 Running project requires Java 11. To start project run ```./gradlew run``` (*NIX) or ```./gradlew.bat run```(WIN) in
- the command line. Gradle will download necessary dependencies.
+ the command line in project root directory. Gradle will download necessary dependencies.
 
 ## Project structure
 
