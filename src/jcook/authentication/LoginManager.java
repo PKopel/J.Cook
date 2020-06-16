@@ -1,4 +1,4 @@
-package jcook.loginManager;
+package jcook.authentication;
 
 import jcook.filters.NameFilter;
 import jcook.models.User;

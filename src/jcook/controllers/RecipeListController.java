@@ -19,7 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import jcook.filters.*;
-import jcook.loginManager.LoginManager;
+import jcook.authentication.LoginManager;
 import jcook.models.Category;
 import jcook.models.Recipe;
 import jcook.providers.RecipeProvider;

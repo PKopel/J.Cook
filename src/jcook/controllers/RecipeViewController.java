@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import jcook.filters.IdFilter;
-import jcook.loginManager.LoginManager;
+import jcook.authentication.LoginManager;
 import jcook.models.Ingredient;
 import jcook.models.Rating;
 import jcook.models.Recipe;
@@ -68,7 +68,6 @@ public class RecipeViewController {
         if (recipe.getRenderedImage() != null)
             recipeImage.setImage(recipe.getRenderedImage());
         recipeDescription.setText(recipe.getDescription());
-
         refresh();
     }
 
