@@ -2,8 +2,13 @@
 
 ![J.Cook](https://github.com/mwegrzyn2311/J.Cook/blob/master/readmeImages/j_cook.jpeg)
 
-*J.Cook* is a simple cookbook application build with *[mongoDB](https://www.mongodb.com)* and 
-*[Java 11](https://openjdk.java.net/projects/jdk/11/)*. 
+*J.Cook* is a simple cookbook application build with *[mongoDB](https://www.mongodb.com)*, 
+*[Java 11](https://openjdk.java.net/projects/jdk/11/)* and *[gradle](https://gradle.org)*. 
+
+## Running project
+
+Running project requires Java 11. To start project run ```./gradlew run``` (*NIX) or ```./gradlew.bat run```(WIN) in
+ the command line. Gradle will download necessary dependencies.
 
 ## Project structure
 
