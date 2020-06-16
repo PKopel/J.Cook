@@ -79,15 +79,20 @@ Documents in collection *user* look like this one:
 
 ![J.Cook](https://github.com/mwegrzyn2311/J.Cook/blob/master/readmeImages/LoginView.JPG)
 
-After opening the app, user sees login panel - he can either log in, start new account creation using register button or join offline.
+After opening the app, user sees login panel - they can either log in, start new account creation using register button
+ or join offline.
 
 ![J.Cook](https://github.com/mwegrzyn2311/J.Cook/blob/master/readmeImages/RegisterView.JPG)
 
-During registration user can specify his username, password and profile image. Password has to contain at least one capital letter and at least one digit.
+During registration user can specify their username, password and profile image. Password has to contain at least one
+ capital letter and at least one digit.
 
 ![J.Cook](https://github.com/mwegrzyn2311/J.Cook/blob/master/readmeImages/RecipeListView.JPG)
 
-After logging in, user sees list of recipes from the database, he can add new filters to find what he is looking for using the left panel and check or remove them using the right panel. The header contains button "Add recipes" which is only there if user is logged with and actual account and can be used to start adding a new recipe. He can also double-click a recipe from the list to see its details.
+After logging in, user sees list of recipes from the database. They can add new filters to find recipes they are looking
+ for using the left panel. Filters can be removed using the right panel. The header contains button "Add recipes" 
+ which is only available if they are logged in with and actual account. User can
+  also double-click a recipe from the list to see its details.
 
 ![J.Cook](https://github.com/mwegrzyn2311/J.Cook/blob/master/readmeImages/NewRecipeView.JPG)
 
@@ -95,11 +100,12 @@ New recipe form
 
 ![J.Cook](https://github.com/mwegrzyn2311/J.Cook/blob/master/readmeImages/RecipeView.JPG)
 
-After double-clicking the recipe a recipe view window will show where user can see all the ingredients, an actual recipe description and also review other users comments and ratings. He can also add his own comment if he haven't already done it and if he is logged in with an account. If user is reviewing a recipe added by him, two buttons will show: one to remove it from the database and another to edit it.
+After double-clicking the recipe a recipe view window will show where user can see all the ingredients, recipe description and review other users comments and ratings. He can also add his own comment if he haven't already done it and if he is logged in with an account. If user is reviewing a recipe added by him, two buttons will show: one to remove it from the database and another to edit it.
 
 ![J.Cook](https://github.com/mwegrzyn2311/J.Cook/blob/master/readmeImages/EditRecipeView.JPG)
 
-Editing a recipe is almost the same as adding a new one but it will just update the recipe instead of adding a new one and all of the recipe details will already be loaded to the update view.
+Editing a recipe is almost the same as adding a new one, but it will just update the recipe instead of adding a new
+ one and all the recipe details will already be loaded to the update view.
 
 ## Dependencies
 
