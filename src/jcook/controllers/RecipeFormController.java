@@ -8,14 +8,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import jcook.authentication.LoginManager;
 import jcook.models.Category;
 import jcook.models.Ingredient;
 import jcook.models.Recipe;
 import jcook.providers.RecipeProvider;
+import jcook.providers.UserProvider;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,6 +51,8 @@ public class RecipeFormController {
     TextField name;
     @FXML
     TextArea description;
+    @FXML
+    ImageView currentImageView;
     private int categoryIndex = 0;
     private int ingredientIndex = 0;
     private int tagIndex = 0;
@@ -173,6 +180,7 @@ public class RecipeFormController {
                         try {
                             FileInputStream input = new FileInputStream(file);
                             int numberRead = input.read(imageBytes);
+                            currentImageView.setImage(new Image(new ByteArrayInputStream(imageBytes)));
                             input.close();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -181,14 +189,21 @@ public class RecipeFormController {
                 }
         );
         save.setOnAction(event -> {
-            RecipeProvider.getInstance().addObject(new Recipe(
+            Recipe newRecipe = new Recipe(
                     name.getText(),
                     description.getText(),
                     imageBytes,
                     ingredientList.stream().filter(Objects::nonNull).collect(Collectors.toList()),
                     tagList.stream().filter(Objects::nonNull).collect(Collectors.toList()),
                     categoryList.stream().filter(Objects::nonNull).collect(Collectors.toList())
-            ));
+            );
+            RecipeProvider.getInstance().addObject(newRecipe);
+            try {
+                UserProvider.getInstance().updateObject(LoginManager.getInstance().getLoggedUser(), newRecipe.getId(), "uploaded_recipes");
+            } catch(IOException ex) {
+                ex.printStackTrace();
+            }
+
             recipeListController.refresh();
             ((Stage) save.getScene().getWindow()).close();
         });

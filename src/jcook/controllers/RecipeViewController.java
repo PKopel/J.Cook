@@ -1,5 +1,6 @@
 package jcook.controllers;
 
+import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +11,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+import jcook.filters.Filter;
 import jcook.filters.IdFilter;
 import jcook.authentication.LoginManager;
 import jcook.models.Ingredient;
@@ -19,6 +24,7 @@ import jcook.models.Recipe;
 import jcook.models.User;
 import jcook.providers.RecipeProvider;
 import jcook.providers.UserProvider;
+import org.bson.conversions.Bson;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -33,6 +39,11 @@ public class RecipeViewController {
     ListView<Ingredient> ingredientList;
     @FXML
     ImageView recipeImage;
+    @FXML
+    Button deleteButton;
+    @FXML
+    Button updateButton;
+
     @FXML
     ScrollPane descriptionScroll;
     @FXML
@@ -56,6 +67,7 @@ public class RecipeViewController {
     private Recipe recipe;
     private final LoginManager loginManager = LoginManager.getInstance();
     private final User currentUser = loginManager.getLoggedUser();
+    private User owner;
 
     public RecipeViewController() throws IOException {
     }
@@ -63,18 +75,40 @@ public class RecipeViewController {
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
 
-        recipeNameLabel.setText(recipe.getName());
+        owner = UserProvider.getInstance().getObjects(new Filter() {
+                                                          @Override
+                                                          public Bson getQuery() {
+                                                              return Filters.eq("uploaded_recipes", recipe.getId());
+                                                          }
+                                                      }).get(0);
+        recipeNameLabel.setText(recipe.getName() + " (by "+ owner.getName() + ")");
         ingredientList.setItems(FXCollections.observableList(recipe.getIngredients()));
         if (recipe.getRenderedImage() != null)
             recipeImage.setImage(recipe.getRenderedImage());
         recipeDescription.setText(recipe.getDescription());
         refresh();
+        initOwnerButtons();
     }
 
     public void initialize() {
         initIngredientList();
         initCommentAdding();
         initCommentList();
+    }
+
+    private void initOwnerButtons() {
+        if(currentUser.getId().equals(owner.getId())) {
+            deleteButton.addEventHandler(ActionEvent.ACTION, e -> {
+                RecipeProvider.getInstance().deleteObjects(new IdFilter(recipe.getId()));
+                ((Stage) mainPane.getScene().getWindow()).close();
+            });
+            updateButton.addEventHandler(ActionEvent.ACTION, e -> {
+                // TODO: implement
+            });
+        } else {
+            deleteButton.setVisible(false);
+            updateButton.setVisible(false);
+        }
     }
 
     private void initIngredientList() {
@@ -93,7 +127,13 @@ public class RecipeViewController {
     private void initCommentAdding() {
         if(loginManager.offlineSession()) {
             addCommentBox.getChildren().clear();
-            addCommentBox.getChildren().add(new Label("You have to be logged in to add comments"));
+            Label label = new Label("You have to be logged in to add comments");
+            label.setAlignment(Pos.CENTER);
+            label.setPrefWidth(commentList.getPrefWidth());
+            label.setTextAlignment(TextAlignment.CENTER);
+            label.setTextFill(Color.INDIANRED);
+            mainPane.getChildren().remove(addCommentBox);
+            mainPane.add(label, 0, 3);
         } else {
             ratingBox.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
             ratingBox.setValue(5);
@@ -122,7 +162,7 @@ public class RecipeViewController {
             scrollPane.setContent(commentContent);
             authorAndDate.getChildren().addAll(author, date);
             authorAndDate.setAlignment(Pos.CENTER);
-            authorAndDate.setSpacing(10);
+            authorAndDate.setSpacing(25);
             vbox.getChildren().addAll(starsBox, scrollPane, authorAndDate);
             return new ListCell<>() {
                 @Override
@@ -155,7 +195,12 @@ public class RecipeViewController {
         commentList.setItems(FXCollections.observableList(recipe.getRatings()));
         if(recipe.getRatings().stream().anyMatch(o -> o.getAuthor().equals(currentUser.getId()))) {
             addCommentBox.getChildren().clear();
-            addCommentBox.getChildren().add(new Label("You have already rated this recipe"));
+            Label label = new Label("You have already rated this recipe");
+            label.setAlignment(Pos.CENTER);
+            label.setPrefWidth(commentList.getPrefWidth());
+            label.setTextFill(Color.GREEN);
+            mainPane.getChildren().remove(addCommentBox);
+            mainPane.add(label, 0, 3);
         }
     }
 }

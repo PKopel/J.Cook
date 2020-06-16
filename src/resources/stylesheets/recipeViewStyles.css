@@ -1,10 +1,10 @@
 Label {
     -fx-text-alignment: left;
 }
-#recipeDescription {
+#descriptionScroll {
     -fx-padding: 5px;
     -fx-font-size: 14px;
 }
-#commentArea HBox {
-    -fx-alignment: center;
+#commentArea {
+    -fx-padding: 5px;
 }
